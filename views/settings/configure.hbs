@@ -1,0 +1,434 @@
+<link href="/bootstrap/css/configure.css" rel="stylesheet"/>
+<script language="javascript" src="/bootstrap/js/settings/configureApp.js"></script>
+<script language="javascript" src="/bootstrap/js/settings/configure-common.js"></script>
+
+<div class="container section">
+    <div class="row" >
+        <div class="mx-auto col-sm-12 col-md-12 col-xl-12 px-2 boxoverlay mt-5 mainwhgt">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mt-3 mb-4 border-bottom">
+                <h4 class="h4 sec-header">Setting</h4>
+            </div>
+            <div class="container-fluid py-1" >
+                <div class="row">
+                    <div class="col-md-3 col-md-border">
+                        <div class="nav-side-menu">
+                            <div class="brand">Menu</div>
+                            <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+                            <div class="menu-list">
+                                <ul id="menu-content" class="menu-content collapse out">
+                                    <li class="active" id="showImagePath" title="Image path of opendental">
+                                        <a href="#" >
+                                            <i class="fas fa-images fa-1x"></i> Image path
+                                        </a>
+                                    </li>
+                                    <li id="ShowClinic" title="Setup clinic">
+                                        <a href="#" >
+                                            <i class="fas fa-hospital fa-1x"></i> Clinic
+                                        </a>
+                                    </li>
+                                    <li id="showReminder"  title="Setup appointment reminder">
+                                        <a href="#">
+                                            <i class="fas fa-stopwatch"></i> Reminder
+                                        </a>
+                                    </li>
+                                    {{!-- <li data-toggle="collapse" data-target="#new" class="collapsed">
+                                        <a href="#"><i class="fa fa-car fa-lg"></i> New <span class="arrow"></span></a>
+                                    </li>
+                                    <ul class="sub-menu collapse" id="new">
+                                        <li>New New 1</li>
+                                    </ul> --}}
+                                </ul>
+                            </div>
+                        </div>                                            
+                    </div>
+                    <div class="col-md-9 col-md-border">
+                        <div class="card innerwhgt">
+                            <h6 class="card-header"></h6>
+                            <div class="card-body">
+                                <div class="sms-alert col-11 mx-auto">
+                                    <div ng-class="alertType" class="m-2" role="alert" ng-if="responseMessage !=='' && alertType != ''">
+                                        <i class="fa fa-exclamation-circle mr-1" style="font-size: 1.3em"></i>
+                                        <span>{[{responseMessage}]}</span>
+                                    </div>
+                                </div>
+                                <div id="divImagePath" class="mt-2 mb-5">
+                                    <form class="mx-auto mb-5" action="" name="frmCustomer" method="POST">
+                                        <input type="hidden" id="id" name="id" ng-model="system.Id" value="1" />
+                                        <div class="form-row mh-100">
+                                            <div class="col-12 mb-3">
+                                                <div class="form-label-group col-12"
+                                                    ng-class="{'has-error':frmCustomer.ODImagePath.$invalid && frmCustomer.ODImagePath.$dirty && showODImagePathError}">
+                                                    <input type="text" id="ODImagePath" name="ODImagePath" ng-model="system.ODImagePath"
+                                                        class="form-control" placeholder="OD ImagePath" required autofocus ng-minlength="3"
+                                                        ng-maxlength="100" maxlength="100"
+                                                        ng-blur="showODImagePathError=frmCustomer.ODImagePath.$invalid && (!frmCustomer.ODImagePath.$pristine)">
+                                                    <label for="ODImagePath">Image path of opendental (ex: C:\OpenDentImages)</label>
+                                                </div>
+                                                <div class="errorMessage col-sm-12">
+                                                    <div ng-messages="frmCustomer.ODImagePath.$dirty && frmCustomer.ODImagePath.$error"
+                                                        ng-show="showODImagePathError">
+                                                        <span class="error" ng-show="frmCustomer.ODImagePath.$error.required">ImagePath is
+                                                            required!</span>
+                                                        <span class="error" ng-show="frmCustomer.ODImagePath.$error.minlength">Minimum
+                                                            length
+                                                            required
+                                                            is 3</span>
+                                                        <span class="error" ng-show="frmCustomer.ODImagePath.$error.maxlength">Maximum
+                                                            length
+                                                            required
+                                                            is 500</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mh-100">
+                                            <div class="col-12 mb-3">
+                                                <div class="col-12 mb-1 mr-auto pull-right">
+                                                    <button type="button" class="btn btn-block btn-outline-dark" ng-click="sendSms()" style="margin-left: 0px"
+                                                        ng-disabled="frmCustomer.$invalid">Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>                                        
+                                    </form>                      
+                                </div>
+                                <!--Clinic -->
+                                <div id="divClinic" class="mt-2 mb-5" style="height: 40rem;">
+                                    <form class="mx-auto mb-5" action="" name="frmClinic" method="POST">
+                                        <input type="hidden" id="id" name="id" ng-model="frmClinic.Id" value="1" />
+                                        <div class="form-row mh-100">
+                                            <div class="col-12 mb-3">
+                                                <div class="form-label-group col-12"
+                                                    ng-class="{'has-error':frmClinic.clinicName.$invalid && frmClinic.clinicName.$dirty && showClinicError}">
+                                                    <input type="text" id="clinicName" name="clinicName" ng-model="frmClinic.ClinicName"
+                                                        class="form-control" placeholder="ClinicName" required autofocus ng-minlength="3"
+                                                        ng-maxlength="500" maxlength="500" minlength="3"
+                                                        ng-blur="showClinicError=frmClinic.clinicName.$invalid && (!frmClinic.clinicName.$pristine)">
+                                                    <label for="clinicName">Clinic Name</label>
+                                                </div>
+                                                <div class="errorMessage col-sm-12">
+                                                    <div ng-messages="frmClinic.clinicName.$dirty && frmClinic.clinicName.$error"
+                                                        ng-show="showClinicError">
+                                                        <span class="error" ng-show="frmClinic.clinicName.$error.required">Clinic name is required</span>
+                                                        <span class="error" ng-show="frmClinic.clinicName.$error.minlength">
+                                                            Minimum length required is 3</span>
+                                                        <span class="error" ng-show="frmClinic.clinicName.$error.maxlength">Maximum
+                                                            length
+                                                            required
+                                                            is 100</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row mh-100">
+                                            <div class="col-md-6 mb-3">
+                                                <div class="form-label-group col-sm-12"
+                                                    ng-class="{'has-error':frmClinic.doctorName.$invalid && frmClinic.doctorName.$dirty && showDoctorNameError}">
+                                                    <input type="text" id="doctorName" name="doctorName" ng-model="frmClinic.DoctorName"
+                                                        class="form-control" placeholder="Doctor Name" required autofocus ng-minlength="3"
+                                                        ng-maxlength="100" maxlength="100" minlength="3"
+                                                        ng-blur="showDoctorNameError=frmClinic.doctorName.$invalid && (!frmClinic.doctorName.$pristine)">
+                                                    <label for="doctorName">Doctor Name</label>
+                                                </div>
+                                                <div class="errorMessage col-sm-12">
+                                                    <div ng-messages="frmClinic.doctorName.$dirty && frmClinic.doctorName.$error"
+                                                        ng-show="showDoctorNameError">
+                                                        <span class="error" ng-show="frmClinic.doctorName.$error.required">Doctor name is
+                                                            required!</span>
+                                                        <span class="error" ng-show="frmClinic.doctorName.$error.minlength">
+                                                            Minimum length required is 3</span>
+                                                        <span class="error" ng-show="frmClinic.doctorName.$error.maxlength">Maximum
+                                                            length
+                                                            required
+                                                            is 100</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <div class="form-label-group col-sm-12"
+                                                    ng-class="{'has-error':frmClinic.phone.$invalid && frmClinic.phone.$dirty && showPhoneError}">
+                                                    <input type="number" id="phone" name="phone" ng-model="frmClinic.Phone"
+                                                        class="form-control" placeholder="Phone" required autofocus ng-minlength="10"
+                                                        ng-maxlength="11" maxlength="11" minlength="10"
+                                                        ng-blur="showPhoneError=frmClinic.phone.$invalid && (!frmClinic.phone.$pristine)">
+                                                    <label for="phone">Phone</label>
+                                                </div>
+                                                <div class="errorMessage col-sm-12">
+                                                    <div ng-messages="frmClinic.phone.$dirty && frmClinic.phone.$error"
+                                                        ng-show="showPhoneError">
+                                                        <span class="error" ng-show="frmClinic.phone.$error.required">Doctor phone is
+                                                            required!</span>
+                                                        <span class="error" ng-show="frmClinic.phone.$error.minlength">
+                                                            Minimum length required is 10</span>
+                                                        <span class="error" ng-show="frmClinic.phone.$error.maxlength">Maximum
+                                                            length
+                                                            required
+                                                            is 11</span>
+                                                    </div>
+                                                </div>                                                
+                                            </div>
+                                        </div>
+
+                                        <!-- Address  -->
+                                        <div class="form-row mh-100">
+                                            <div class="col-md-6 mb-3">
+                                                <div class="form-label-group col-sm-12"
+                                                    ng-class="{'has-error':frmClinic.address1.$invalid && frmClinic.address1.$dirty && showaddress1Error}">
+                                                    <input type="text" id="address1" name="address1" ng-model="frmClinic.Address1"
+                                                        class="form-control" placeholder="Doctor Name" required autofocus ng-minlength="3"
+                                                        ng-maxlength="500" maxlength="500" minlength="3"
+                                                        ng-blur="showaddress1Error=frmClinic.address1.$invalid && (!frmClinic.address1.$pristine)">
+                                                    <label for="address1">Assress 1</label>
+                                                </div>
+                                                <div class="errorMessage col-sm-12">
+                                                    <div ng-messages="frmClinic.address1.$dirty && frmClinic.address1.$error"
+                                                        ng-show="showaddress1Error">
+                                                        <span class="error" ng-show="frmClinic.address1.$error.required">Address 1 is
+                                                            required!</span>
+                                                        <span class="error" ng-show="frmClinic.address1.$error.minlength">
+                                                            Minimum length required is 3</span>
+                                                        <span class="error" ng-show="frmClinic.address1.$error.maxlength">Maximum
+                                                            length
+                                                            required
+                                                            is 500</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <div class="form-label-group col-sm-12"
+                                                    ng-class="{'has-error':frmClinic.address2.$invalid && frmClinic.address2.$dirty && showaddress2Error}">
+                                                    <input type="text" id="address2" name="address2" ng-model="frmClinic.Address2"
+                                                        class="form-control" placeholder="address2" autofocus ng-minlength="3"
+                                                        ng-maxlength="500" maxlength="500" minlength="3"
+                                                        ng-blur="showaddress2Error=frmClinic.address2.$invalid && (!frmClinic.address2.$pristine)">
+                                                    <label for="address2">Assress 2 (optional)</label>
+                                                </div>
+                                                <div class="errorMessage col-sm-12">
+                                                    <div ng-messages="frmClinic.address2.$dirty && frmClinic.address2.$error"
+                                                        ng-show="showaddress2Error">
+                                                        <span class="error" ng-show="frmClinic.address2.$error.minlength">
+                                                            Minimum length required is 3</span>
+                                                        <span class="error" ng-show="frmClinic.address2.$error.maxlength">Maximum
+                                                            length
+                                                            required
+                                                            is 500</span>
+                                                    </div>
+                                                </div>                                                
+                                            </div>
+                                        </div>
+
+                                        <!-- City -->
+                                        <div class="form-row mh-100">
+                                            <div class="col-md-6 mb-3">
+                                                <div class="form-label-group col-sm-12"
+                                                    ng-class="{'has-error':frmClinic.city.$invalid && frmClinic.city.$dirty && showCityError}">
+                                                    <input type="text" id="city" name="city" ng-model="frmClinic.City"
+                                                        class="form-control" placeholder="Doctor Name" required autofocus ng-minlength="3"
+                                                        ng-maxlength="500" maxlength="500" minlength="3"
+                                                        ng-blur="showCityError=frmClinic.city.$invalid && (!frmClinic.city.$pristine)">
+                                                    <label for="city">City</label>
+                                                </div>
+                                                <div class="errorMessage col-sm-12">
+                                                    <div ng-messages="frmClinic.city.$dirty && frmClinic.city.$error"
+                                                        ng-show="showCityError">
+                                                        <span class="error" ng-show="frmClinic.city.$error.required">City is
+                                                            required!</span>
+                                                        <span class="error" ng-show="frmClinic.city.$error.minlength">
+                                                            Minimum length required is 3</span>
+                                                        <span class="error" ng-show="frmClinic.city.$error.maxlength">Maximum
+                                                            length
+                                                            required
+                                                            is 500</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <div class="form-label-group col-sm-12"
+                                                    ng-class="{'has-error':frmClinic.state.$invalid && frmClinic.state.$dirty && showStateError}">
+                                                    <input type="text" id="state" name="state" ng-model="frmClinic.State" class="form-control" placeholder="state"
+                                                        autofocus list="hosting-plan" required
+                                                        ng-blur="showStateError=frmClinic.state.$invalid && (!frmClinic.state.$pristine)">
+                                                    <label for="state">State</label>
+                                                    <datalist id="hosting-plan">
+                                                        <option value="TX">Texas</option>
+                                                        <option value="CA">California</option>
+                                                        <option value="MI">Michigan</option>
+                                                    </datalist>
+                                                </div>
+                                                <div class="errorMessage col-sm-12">
+                                                    <div ng-messages="frmClinic.state.$dirty && frmClinic.state.$error" ng-show="showStateError">
+                                                        <span class="error" ng-show="frmClinic.state.$error.required">
+                                                            State is required!</span>
+                                                        <span class="error" ng-show="frmClinic.state.$error.maxlength">Maximum
+                                                            length
+                                                            required
+                                                            is 500</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        
+                                        <!-- Zipcode -->
+                                        <div class="form-row mh-100">
+                                            <div class="col-md-6 mb-3">
+                                                <div class="form-label-group col-sm-12"
+                                                    ng-class="{'has-error':frmClinic.zipcode.$invalid && frmClinic.zipcode.$dirty && showZipcodeError}">
+                                                    <input type="number" id="zipcode" name="zipcode" ng-model="frmClinic.Zipcode"
+                                                        class="form-control" placeholder="Zip code" required autofocus ng-minlength="3"
+                                                        ng-maxlength="10" maxlength="10" minlength="5"
+                                                        ng-blur="showZipcodeError=frmClinic.zipcode.$invalid && (!frmClinic.zipcode.$pristine)">
+                                                    <label for="zipcode">Zipcode</label>
+                                                </div>
+                                                <div class="errorMessage col-sm-12">
+                                                    <div ng-messages="frmClinic.zipcode.$dirty && frmClinic.zipcode.$error"
+                                                        ng-show="showZipcodeError">
+                                                        <span class="error" ng-show="frmClinic.zipcode.$error.required">Zip code is
+                                                            required!</span>
+                                                        <span class="error" ng-show="frmClinic.zipcode.$error.minlength">
+                                                            Minimum length required is 5</span>
+                                                        <span class="error" ng-show="frmClinic.zipcode.$error.maxlength">Maximum
+                                                            length
+                                                            required
+                                                            is 10</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row mh-100">
+                                            <div class="col-12 mb-3">
+                                                <div class="col-12 mb-1 mr-auto pull-right">
+                                                    <button type="button" class="btn btn-block btn-outline-dark" ng-click="sendSms()" style="margin-left: 0px"
+                                                        ng-disabled="frmClinic.$invalid">Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!--Reminder -->
+                                <div id="divReminder" class="mt-2 mb-5">
+                                    <form class="mx-auto mb-5" action="" name="frmReminder" method="POST">
+                                        <input type="hidden" id="id" name="id" ng-model="frmReminder.Id" value="1" />
+                                        <!-- Reminder days -->
+                                        <div class="form-row mh-100">
+                                            <div class="col-md-3 mb-3">
+                                                <div class="form-label-group col-sm-12"
+                                                    ng-class="{'has-error':frmReminder.firstReminder.$invalid && frmReminder.firstReminder.$dirty && showFirstReminderError}">
+                                                    <input type="number" id="firstReminder" name="firstReminder" ng-model="reminder.FirstReminder"
+                                                        class="form-control" placeholder="First Reminder" required autofocus ng-minlength="1"
+                                                        ng-maxlength="2" maxlength="2" minlength="1"
+                                                        ng-blur="showFirstReminderError=frmReminder.firstReminder.$invalid && (!frmReminder.firstReminder.$pristine)">
+                                                    <label for="firstReminder">First Reminder</label>
+                                                </div>
+                                                <div class="errorMessage col-sm-12">
+                                                    <div ng-messages="frmReminder.firstReminder.$dirty && frmReminder.firstReminder.$error"
+                                                        ng-show="showFirstReminderError">
+                                                        <span class="error" ng-show="frmReminder.firstReminder.$error.required">First Reminder is
+                                                            required!</span>
+                                                        <span class="error" ng-show="frmReminder.firstReminder.$error.minlength">
+                                                            Minimum length required is 1</span>
+                                                        <span class="error" ng-show="frmReminder.firstReminder.$error.maxlength">Maximum
+                                                            length
+                                                            required
+                                                            is 3</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <div class="form-label-group col-12">
+                                                    <select class="custom-select" id="firstReminderMode" name="firstReminderMode" ng-model="reminder.FirstReminderMode">
+                                                        <option selected value="h">Hour(s)</option>
+                                                        <option value="d">Day(s)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <div class="form-label-group col-sm-12"
+                                                    ng-class="{'has-error':frmReminder.secondReminder.$invalid && frmReminder.secondReminder.$dirty && showSecondReminderError}">
+                                                    <input type="number" id="secondReminder" name="secondReminder" ng-model="reminder.SecondReminder"
+                                                        class="form-control" placeholder="Second Reminder" required autofocus ng-minlength="1"
+                                                        ng-maxlength="3" maxlength="3" minlength="1"
+                                                        ng-blur="showSecondReminderError=frmReminder.secondReminder.$invalid && (!frmReminder.secondReminder.$pristine)">
+                                                    <label for="secondReminder">Second Reminder</label>
+                                                </div>
+                                                <div class="errorMessage col-sm-12">
+                                                    <div ng-messages="frmReminder.secondReminder.$dirty && frmReminder.secondReminder.$error"
+                                                        ng-show="showSecondReminderError">
+                                                        <span class="error" ng-show="frmReminder.secondReminder.$error.required">Second Reminder is
+                                                            required!</span>
+                                                        <span class="error" ng-show="frmReminder.secondReminder.$error.minlength">
+                                                            Minimum length required is 1</span>
+                                                        <span class="error" ng-show="frmReminder.secondReminder.$error.maxlength">Maximum
+                                                            length
+                                                            required
+                                                            is 3</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <div class="form-label-group col-12">
+                                                    <select class="custom-select" id="secondReminderMode" name="secondReminderMode" ng-model="reminder.SecondReminderMode">
+                                                        <option value="h">Hour(s)</option>
+                                                        <option selected value="d">Day(s)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--Reminder Message -->
+                                        <div class="form-row mh-100">
+                                            <div class="col-12 mb-5">
+                                                <a for="reminderMessage" class="ml-3">Reminder Message 
+                                                    <a href="#" data-toggle="popover" title="Dynamic values" data-html="true" data-content="Please use the constants in place of dynamic values as below
+                                                     <br/> {firstName} - Firstname
+                                                     <br/> {lastName} - Lasttname
+                                                     <br/> {datetime} - Appointment datetime
+                                                     <br/> {clinicNumber} - Clinic number">
+                                                     
+                                                        <i class="fas fa-info-circle" style="color: rgb(0, 102, 255);"></i>
+                                                    </a>
+                                                </label>
+                                                <div class="form-label-group col-12"
+                                                    ng-class="{'has-error':frmReminder.reminderMessage.$invalid && frmReminder.reminderMessage.$dirty && showReminderMessageError}">
+
+                                                    <textarea id="reminderMessage" name="reminderMessage" ng-model="reminder.ReminderMessage"
+                                                        class="form-control" placeholder="Reminder Message" required autofocus ng-minlength="3"
+                                                        ng-maxlength="500" maxlength="500" minlength="3" rows="5"
+                                                        ng-blur="showReminderMessageError=frmReminder.reminderMessage.$invalid && (!frmReminder.reminderMessage.$pristine)"></textarea>
+                                                </div>
+                                                <div class="errorMessage col-sm-12">
+                                                    <div ng-messages="frmReminder.reminderMessage.$dirty && frmReminder.reminderMessage.$error"
+                                                        ng-show="showReminderMessageError">
+                                                        <span class="error" ng-show="frmReminder.reminderMessage.$error.required">Clinic name is required</span>
+                                                        <span class="error" ng-show="frmReminder.reminderMessage.$error.minlength">
+                                                            Minimum length required is 3</span>
+                                                        <span class="error" ng-show="frmReminder.reminderMessage.$error.maxlength">Maximum
+                                                            length
+                                                            required
+                                                            is 500</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mh-100">
+                                            <div class="col-12 mb-3">
+                                                <div class="col-12 mb-1">
+                                                    <button type="button" class="btn btn-block btn-outline-dark" ng-click="" style="margin-left: 0px"
+                                                        ng-disabled="frmReminder.$invalid">Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>            
+           
+          
+        </div>
+    </div>
+</div>
+

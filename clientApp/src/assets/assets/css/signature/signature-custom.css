@@ -1,0 +1,35 @@
+.wrapper {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid #e2e2e2;
+    border-radius: 2px;
+    
+    /*2px 4px 10px rgba(61, 60, 61, 0.2)  ; */
+  	box-shadow: -4px -4px 14px rgba(97, 97, 97, 0.2);
+	  -webkit-box-shadow: -4px -4px 14px rgba(97, 97, 97, 0.2);
+	  -moz-box-shadow: -4px -4px 14px rgba(97, 97, 97, 0.2);
+  }
+  
+  /* .signature-pad {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width:100%;
+    height:198px;
+    background-color: white;
+  } */
+  .signature-pad{
+    position: relative;
+    left: 0;
+    top: 0;
+    width:100%;
+    height:198px;
+    background-color: white;
+    border-radius: 5px;
+  }
+  

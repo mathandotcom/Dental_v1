@@ -1,0 +1,118 @@
+
+<script language="javascript" src="/bootstrap/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+<script language="javascript" src="/bootstrap/js/finance/consentApp.js"></script>
+
+<input type="hidden" value="{{patientId}}" id="patientId" ng-model="PatientId" />
+<input type="hidden" value="{{consenttype}}" id="consenttype" ng-model="ConsentType" />
+
+<div class="container-fluid section">
+    <div class="row">
+        <div class="mx-auto mb-5 boxboost" style="background-color:#fff;width: 80%;" id="patientConsentForm">
+            <div class="row">
+                <div class="mt-3 mb-5 text-center col-sm-12">
+                    <h3>{{title}}</h3>
+                </div>
+                <input type="hidden" name="pName", id="pName" value="{[{FullName}]}">
+
+                <div class="col-lg-10 col-sm-10 col-md-10 mx-auto mb-2" style="min-height: 10px">
+                    <div ng-class="messageStatus" class="m-2" role="alert" ng-if="message !=='' && messageStatus != ''">
+                        <i class="fa fa-exclamation-circle mr-1" style="font-size: 1.3em"></i>
+                        <span>{[{message}]}</span>
+                    </div>
+                </div>
+
+                <div class="col-12 mx-auto mb-5" id="patient_details">
+                    <div class="pull-left m-2 d-inline p-2" >
+                        <button type="button" class="btn btn-primary btn-circle" id="btnNewConsent" ng-click="openNewConsent()" title="Create new Consent" data-toggle="tooltip" data-placement="right">
+                            <i class="fas fa-plus-circle fa-3x icon-center"></i>
+                        </button>
+                        
+                    </div>
+                    <div class="pull-left mt-4 d-inline p-2" style="background-color: #fff;" ></div>
+                    <table class="table table-bordered border-light mb-5" style="border-color:#f5f5f5">
+                        <thead>
+                            <tr>
+                                <th>Sr#</th>
+                                <th>Created On</th>
+                                <th>Accepted By</th>
+                                <th>Received By</th>
+                                <th>Consent</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tr ng-repeat="consent in availableConsents">
+                            <td class="mx-auto" style="width:30px;">{[{$index + 1}]}</td>
+                            <td scope="col">{[{consent.createdon | date:'MM/dd/yyyy HH:mm:ss'}]}</td>
+                            <td scope="col">{[{FullName}]}</td>
+                            <td scope="col">{[{ consent.firstname }]} {[{ consent.lastname }]}</td>
+                            <td scope="col" class="text-center">
+                                <span data-placement="right" data-toggle="tooltip" title="Click to open existing consent">
+                                <a href="#" id="modalImage" data-toggle="modal" data-target="#consentModal" data-path="{[{ consent.filePath }]}"><i class="fa fa-file-image-o fa-2x"></i>
+                                </a>
+                                </span>
+                            </td>
+                            <td scope="col">{[{ consent.comments }]} </td>
+                        </tr>
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- The Modal -->
+<div class="modal fade modal-center" id="consentModal" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Consent Form</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <img src="" id="imgConsentForm" width="100%">
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+<script>
+    $(function () {
+        var element = $("#patientConsentForm"); // global variable
+
+        $('#consentModal').modal({
+            keyboard: true,
+            show: false,
+            backdrop: 'static'
+        });
+        $("#consentModal").on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var imagePath = button.data('path'); // Extract info from data-* attributes
+            var modal = $(this);
+            modal.find('.modal-body img').attr("src", imagePath);
+        });
+
+
+        $("#modalImage").click(function(){
+            var imagePath = $(this).data('path');
+            console.log(imagePath);
+        });
+        
+    });
+
+</script>

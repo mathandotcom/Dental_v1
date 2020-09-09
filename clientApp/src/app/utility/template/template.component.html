@@ -1,0 +1,182 @@
+<div class="container-fluid">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-right">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Metrica</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0);">Template</a></li>
+                    </ol>
+                </div>
+                <h4 class="page-title">All Templates</h4>
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+
+    <!-- end page title end breadcrumb -->
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card" [ngClass]="needToSchedule ? 'h-wsch' : 'h-wosch'">
+                <div class="card-header">
+                    <h5>Template Category</h5>
+                </div>                
+                <div class="card-body">
+                    <app-tree (selectTemplate)="populateTemplate($event)"></app-tree>
+                </div>
+                <!--end card-body-->
+            </div>
+            <!--end card-->
+        </div>
+        <!--end col-->
+
+        <div class="col-lg-6">
+            <div class="card" [ngClass]="needToSchedule ? 'h-wsch' : 'h-wosch'">
+                <div class="card-header">
+                    <h5>Create Template </h5>
+                </div>
+                <form (ngSubmit)="f.form.valid && submitTeamplate(f)" #f="ngForm">
+                    <div class="card-body">
+                        <div *ngIf="errorMessage" class="alert alert-outline-pink mt-3 mb-2"><span class="fa fa-info-circle mr-2"
+                                style="font-size: 16px;"></span>{{errorMessage}}</div>
+
+                        <div *ngIf="isLoading" class="col-12 mx-auto mb-5 d-flex justify-content-center" style="position: absolute; top: 350px;">
+                            <div class="p-3 load-box">
+                                <div class="spinner-border text-blue" role="status"><span class="sr-only">Loading...</span></div>
+                            </div>  
+                        </div>
+
+                        <div *ngIf="errorMessage === ''">
+                            <div class="form-row mt-3">
+                                <div class="col-md-12 mb-3 text-bold">
+                                    <label for="validationCustom01"
+                                        [ngClass]="{'input-error-bold': !tempTypeName.valid && tempTypeName.touched || f.submitted && tempTypeName.invalid}">Template
+                                        Name</label>
+                                    <input class="form-control" type="text" id="templateName" name="templateName"
+                                        [(ngModel)]="templateTypeName" #tempTypeName="ngModel" ngModel required
+                                        [ngClass]="{'input-element-error': !tempTypeName.valid && tempTypeName.touched || f.submitted && tempTypeName.invalid}">
+                                </div>
+                            </div>
+                    
+                            <div class="form-row mt-1">
+                                <div class="col-md-12 mb-3 text-bold">
+                                    <label for="validationTriggerWhen"
+                                    [ngClass]="{'input-error-bold': !tmpTriggerWhen.valid && tmpTriggerWhen.touched || f.submitted && tmpTriggerWhen.invalid}"
+                                        >Send message when</label>
+                                        <ng-multiselect-dropdown #tmpTriggerWhen="ngModel" ngModel
+                                        name="messageTriggerWhen"
+                                        [placeholder]="'Select trigger option'"
+                                        [settings]="settings"
+                                        [data]="dataEvents" 
+                                        [(ngModel)]="templateSelectedTrigger"
+                                        [disabled]="false"
+                                        (onSelect)="onItemSelect($event)" 
+                                        (onDeSelect)="onDeSelect($event)"
+                                        (onSelectAll)="onSelectAll($event)"
+                                        (onDeSelectAll)="onDeSelectAll($event)">                                        
+                                        </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row mt-1">
+                                <div class="col-md-12 mb-3 text-bold">
+                                    <label for="validationCustom01"
+                                        [ngClass]="{'input-error-bold': !tmpSubject.valid && tmpSubject.touched || f.submitted && tmpSubject.invalid}">Subject</label>
+                                    <input class="form-control" type="text" id="messageSubject" name="messageSubject"
+                                        [(ngModel)]="templateMessageSubject" #tmpSubject="ngModel" ngModel required
+                                        [ngClass]="{'input-element-error': !tmpSubject.valid && tmpSubject.touched || f.submitted && tmpSubject.invalid}">
+                                </div>
+                            </div>
+                    
+                            <div class="form-row mt-1" *ngIf="needToSchedule">
+                                <div class="col-md-12 mb-3 text-bold">
+                                    <label for="validationSchedule"
+                                        [ngClass]="{'input-error-bold': !tmpLeadTime.valid && tmpLeadTime.touched || f.submitted && tmpLeadTime.invalid}">Schedule</label>
+                                
+                                    <div class="input-group" id="leadtimeInterval">
+                                        <input class="form-control col-md-3" type="number" id="leadtime_number" name="leadTimeNumber"
+                                            [(ngModel)]="templateLeadTimeNumber" #tmpLeadTime="ngModel" ngModel required
+                                            [ngClass]="{'input-element-error': !tmpLeadTime.valid && tmpLeadTime.touched || f.submitted && tmpLeadTime.invalid}">
+                                
+                                        <select class="form-control custom-select col-md-3 ml-1" id="ldInterval" name="leadTimeInterval"
+                                            [(ngModel)]="templateLeadTimeInterval" #tmpLeadTimeInterval="ngModel" ngModel required
+                                            style="border-radius: 3px;"
+                                            [ngClass]="{'input-element-error': !tmpLeadTimeInterval.valid && tmpLeadTimeInterval.touched || f.submitted && tmpLeadTimeInterval.invalid}">
+                                            <option value="1">day(s)</option>
+                                            <option value="2">hour(s)</option>
+                                        </select>
+                                
+                                        <select class="form-control custom-select col-md-3 ml-1" id="ldMode" name="leadTimeMode"
+                                            [(ngModel)]="templateLeadTimeMode" #tmpLeadTimeMode="ngModel" ngModel required style="border-radius: 3px;"
+                                            [ngClass]="{'input-element-error': !tmpLeadTimeMode.valid && tmpLeadTimeMode.touched || f.submitted && tmpLeadTimeMode.invalid}">
+                                            <option value="1" >Prior</option>
+                                            <option value="2">Later</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row mt-1">
+                                <div class="col-md-12 mb-1 text-bold">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="validationCustom01"
+                                                [ngClass]="{'input-error-bold': f.submitted && editor_body.invalid}">Message</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <select class="form-control custom-select" [title]="'Placeholder'" (change)="appendText()"
+                                                id="drpPlaceholder" name="drpPlaceholder" [(ngModel)]="dynOption">
+                                                <option selected value=''>Placeholder</option>
+                                                <option *ngFor='let option of placeholder_config' [value]="option.id">{{option.display}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <quill-editor required [(ngModel)]="templateBodyContent_q" name="emailbody_quill" #editor
+                                        customToolbarPosition="bottom" [styles]="{height: '340px'}" [modules]="moduleOptions"
+                                        [readOnly]="isReadOnly" (onContentChanged)="changedContent($event)"
+                                        (onEditorCreated)="addBindingCreated($event)"
+                                        [ngClass]="{'input-element-error': f.submitted && editor_body.invalid}"></quill-editor>
+                                    <!-- (onEditorChanged)="changedEditor($event)"  -->
+                            
+                                    <div>
+                                    <input type="text" #editor_body="ngModel" [(ngModel)]="templateBodyContent_q_alt" name="emailbody_alt"
+                                        width="10px" required style="display: none;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row mt-1" style="display: none;">
+                                <div class="col-md-12 mb-1 text-bold">
+                                    <label for="validationCustom01"
+                                        [ngClass]="{'input-error-bold': !htmlBody.valid && htmlBody.touched || f.submitted && htmlBody.invalid}">Message</label>
+                                    <editor id='emailbody' name='emailbody' #htmlBody="ngModel" ngModel class=""
+                                        [init]="templateInit" [(ngModel)]="templateBodyContent">
+                    
+                                    </editor>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end card-body-->
+                    <div class="modal-footer t-footer" *ngIf="errorMessage === ''">
+                        <i appLoadScript [script]="'./assets/assets/custom/mce.contract.plugin.js'"></i>
+                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                        <button type="button" class="btn btn-danger mr-2" (click)="cancelTemplate()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+            <!--end card-->
+        </div>
+        <!--end col-->
+
+    </div>
+    <!--end row-->
+
+</div><!-- container -->
+<!--  Modal content for the above example -->
+
+<i appLoadScript [script]="'./assets/assets/js/app.js'"></i>                
+<i appLoadScript [script]="'./assets/assets/custom/common.js'"></i>         

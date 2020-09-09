@@ -1,0 +1,30 @@
+<script src="bootstrap/js/homeng.js"></script>
+<div class="jumbotron-custom jumbotron-custom-fluid">
+    <div class="container-fluid">
+        <h1 class="display-6">Hello, Doctors!</h1>
+        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+        <!--<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>-->
+        {{#unless user}}
+            <p class="px-5">
+                <a class="btn btn-primary" href="/register">Sign Up</a>
+            </p>
+        {{/unless}}
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <section class="container">
+            <div class="row justify-content-lg-between align-items-lg-center py-5">
+                <div class="col-lg-6 text-center text-lg-left">
+                    <h1 class="display-4 mb-4">Generate Invoice Bill</h1>
+                    <p class="lead text-secondary mb-4">search a patient and generate consolidated invoice report made easy</p>
+                    <a class="btn btn-pill btn-primary btn-block d-md-inline-block w-auto mr-md-4 mb-4 mb-md-0" asp-controller="Finance" asp-action="Index">Search</a>
+                    <a href="docs.html" class="link-cta">Help</a>
+                </div>
+                <div class="col-lg-6">
+                    <img src="images/revenue.svg" class="img-fluid d-none d-lg-block" alt="">
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

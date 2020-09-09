@@ -1,0 +1,10 @@
+.shadow-less{
+    -webkit-box-shadow: 0 0px 0px 0px rgba(0,0,0,.5);
+    -moz-box-shadow: 0 0px 0px 0px rgba(0,0,0,.5);
+    box-shadow: 0 0px 0px 0px rgba(0,0,0,.5);
+
+}
+
+.fobox {
+    margin: 15px -15px -14px -15px;
+}

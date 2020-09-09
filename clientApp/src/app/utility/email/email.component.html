@@ -1,0 +1,109 @@
+<div class="modal-header">
+    <h5 class="modal-title mt-0" id="mdTreatmentPlan">Send mail to {{patientName}}</h5>
+    <button type="button" class="close" (click)="model.dismiss('Cross click')" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form (ngSubmit)="f.form.valid && sendMail(f)" #f="ngForm">
+    <div class="modal-body">
+        <div *ngIf="isLoadingtp" class="d-flex justify-content-center">
+            <div class="spinner-border text-blue" role="status"><span class="sr-only">Loading...</span></div>
+        </div>
+        <div class="container" *ngIf="!isLoadingtp">
+            <div class="row">
+                <div class="w-100 boxboost">
+                    <div class="alert alert-danger m-2" role="alert" *ngIf="errorMessage !== ''">
+                        <i class="fa fa-exclamation-circle mr-1"></i>
+                        {{errorMessage}}
+                    </div>
+
+                    <div class="card mb-0 p-3 shadow-less">
+                        <div class="form-group row border-bottem"
+                            [ngClass]="{'input-bb-error': !toMail.valid && toMail.touched || f.submitted && toMail.invalid}">
+                            <label for="toaddress" class="col-sm-1 col-form-label text-right"
+                                style="margin-right: -15px;">To</label>
+                            <div class="col-sm-9">
+                                <input id="toaddress" name="toaddress" class="form-control" type="email" [ngModel]="toMailAddress"
+                                    value="bootstrap@example.com" #toMail="ngModel" ngModel required>
+                            </div>
+                            <div class="col-sm-2 col-form-label text-right right-menu">
+                                <a (click)="showCcMail = !showCcMail" class="mr-2 pointer">CC</a>
+                                <a (click)="showBccMail = !showBccMail" class="mr-2 pointer">Bcc</a>
+                            </div>
+                        </div>
+
+                        <div class="form-group row border-bottem" id="ccAddrBox" *ngIf="showCcMail">
+                            <label for="ccaddress" class="col-sm-1 col-form-label text-right"
+                                style="margin-right: -15px;">Cc</label>
+                            <div class="col-sm-11">
+                                <input id="ccaddress" name="ccaddress" class="form-control" type="email"
+                                    #ccMail="ngModel" ngModel email>
+                            </div>
+                        </div>
+
+                        <div class="form-group row border-bottem" id="bccAddrBox" *ngIf="showBccMail">
+                            <label for="bccaddress" class="col-sm-1 col-form-label text-right"
+                                style="margin-right: -15px;">Bcc</label>
+                            <div class="col-sm-11">
+                                <input id="bccaddress" name="bccaddress" class="form-control" type="email"
+                                    value="bootstrap@example.com" #bccMail="ngModel" ngModel email>
+                            </div>
+                        </div>
+
+                        <div class="form-group row border-bottem"
+                            [ngClass]="{'input-bb-error': !subjectMail.valid && subjectMail.touched || f.submitted && subjectMail.invalid}">
+                            <label for="mailsubject" class="col-sm-1 col-form-label text-right"
+                                style="margin-right: -15px;">Subject</label>
+                            <div class="col-sm-11">
+                                <input id="mailsubject" name="mailsubject" class="form-control" type="text"
+                                    value="Mail Subject" #subjectMail="ngModel" ngModel required>
+                            </div>
+                        </div>
+                        <!-- apiKey="4onxo8wttvsv54p2ghl34u81f01i7pfmy2adtjwf8fetgash" -->
+                        <div class="form-group row"
+                            [ngClass]="{'input-bb-error': !htmlBody.valid && htmlBody.touched || f.submitted && htmlBody.invalid}">
+                            <div class="col-sm-12">
+                                <editor id='emailbody' name='emailbody' #htmlBody="ngModel" ngModel required
+                                    class="mt-3"  [init]="{
+                                                base_url: '/tinymce',
+                                                suffix: '.min',
+                                                height: 400,
+                                                menubar: true,
+                                                plugins: [
+                                                'advlist autolink lists link image charmap print preview anchor',
+                                                'searchreplace visualblocks code fullscreen',
+                                                'insertdatetime media table paste code help wordcount placeholder noneditable'
+                                                ],
+                                                toolbar:
+                                                'insertfile undo redo | placeholder | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor | removeformat | help | codeformat emoticons',
+                                                style_formats: [
+                                                    {title: 'Bold text', inline: 'b'},
+                                                    {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                                                    {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                                                    {title: 'Example 1', inline: 'span', classes: 'example1'},
+                                                    {title: 'Example 2', inline: 'span', classes: 'example2'},
+                                                    {title: 'Table styles'},
+                                                    {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                                                ],
+                                                menu: {
+                                                    custom: { title: 'Custom menu', items: 'basicitem nesteditem toggleitem' }
+                                                }
+                                            }">
+                                </editor>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <!-- <i appLoadScript [script]="'./assets/plugins/tinymce/tinymce.min.js'"></i> -->
+        <!-- <i appLoadScript [script]="'./tinymce/tinymce.min.js'"></i> -->
+        <i appLoadScript [script]="'./assets/assets/custom/mce.contract.plugin.js'"></i>
+        <button type="submit" class="btn btn-primary mr-2">Send</button>
+        <button type="button" class="btn btn-secondary" (click)="model.close('Close click')">Close</button>
+    </div>
+</form>
+
+

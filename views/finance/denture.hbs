@@ -1,0 +1,273 @@
+<link rel="stylesheet" href="/bootstrap/css/signature/signature-custom.css">
+<script language="javascript" src="/bootstrap/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+<script language="javascript" src="/bootstrap/js/finance/consentApp.js"></script>
+<script language="javascript" src="/bootstrap/js/html2canvas1.0.0.js"></script>
+
+<script language="javascript" src="/bootstrap/js/base64.js"></script>
+<script language="javascript" src="/bootstrap/js/canvas2image.js"></script>
+<input type="hidden" value="{{patientId}}" id="patientId" ng-model="PatientId" />
+<input type="hidden" value="{{consenttype}}" id="consenttype" ng-model="ConsentType" />
+<div class="container-fluid section">
+    <div class="row">       
+        <div class="container mb-5 boxboost" style="background-color:#fff; border:1px solid #b0b0b0" id="patientConsentForm">
+            <div class="row">
+                <div class="mt-3 mb-5 text-center col-sm-12">
+                    <h3>Informed consent for complete Denture Prosthetics and/or removable partial Denture Prosthetics</h3>
+                </div>
+                <input type="hidden" name="pName", id="pName" value="{[{FullName}]}">
+
+                <!--
+                <div class="col-lg-10 col-sm-10 col-md-10 mx-auto mb-2" style="min-height: 10px">
+                    <div ng-class="alertType" class="m-2" role="alert" ng-if="message !=='' && alertType != ''">
+                        <i class="fa fa-exclamation-circle mr-1" style="font-size: 1.3em"></i>
+                        <span>{[{message}]}</span>
+                    </div>
+                </div>
+                -->
+
+                <div class="col-10 ml-5 mb-4 cntpg1" id="patient_details">
+                    <table class="table table-bordered table-striped border-light mb-5 col-9" style="border-color:#f5f5f5">
+                        <tr>
+                            <td>Patient Name</td>
+                            <td>{[{FullName}]}</td>
+                        </tr>
+                        <tr>
+                            <td>Requested by</td>
+                            <td>{{user.firstname}} {{user.lastname}}</td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td>{[{currentDate | date:'MM/dd/yyyy HH:mm:ss'}]}</td>
+                        </tr>
+                        <tr>
+                            <td>Tooth Number(s)</td>
+                            <td>{[{2}]}</td>
+                        </tr>
+                    </table>
+                    <p class="font-weight-bold mt-4 mb-1">Summary of Consent</p>
+
+                    <div class="mt-2">
+                        <p>
+                            The purpose of this document is to inform you of what to expect during removable
+                            prosthodontic treatment along with the benefits and potential risks or problems that may
+                            be encountered before, during or after treatment.
+                            Please read this document carefully and make note of any questions you may wish to
+                            discuss with us. You will be asked to sign a copy of this document before treatment
+                            begins.
+                        </p>
+
+                        <p>
+                            <ul>
+                                <ol>
+                                    <p>
+                                    <li>
+                                        The purpose of a removable prosthesis is to replace missing teeth with dentures
+                                        that can be removed from the mouth. The 3 major categories of removable
+                                        prosthetics are:
+                                        <p>
+                                            <br>a. Removable complete dentures (supported by gum and bone tissue). 
+                                            <br>b. Removable partial dentures (supported by gum and bone tissue as well as teeth).
+                                            <br>c. Overdentures (supported by gum and bone tissue as well as tooth roots or implants).<br>
+                                        </p>
+                                    </li>
+                                    </p>
+                                    <p>
+                                    <li>
+                                        Removable prosthetics are generally chosen as a tooth replacement option over
+                                        implants over non-removable prosthetics for financial or anatomical limitations.
+                                        In other words, removable prosthetics are generally as a less than ideal option.
+                                    </li>
+                                    </p>
+                                    <p>
+                                    <li><strong>Removable</strong> -
+
+                                        This is self explanatory, but it is important to know that your teeth
+                                        are removable and should be removed for cleaning and at night unless otherwise
+                                        recommended. This allows the gum and bone tissue to “breathe” and takes
+                                        pressure off of the bone, especially during sleep when most people put
+                                        extraordinary force on their teeth.                                        
+                                    </li>
+                                    </p>
+                                    <p><li>
+                                        <strong>Chewing efficiency</strong> - 
+                                        It is well documented that with increasing tooth loss, there is
+                                        a corresponding decrease in chewing efficiency. This means that with your new
+                                        dentures, you may not be able to eat the foods you have been able to eat in the
+                                        past. With time, most people accommodate and are able to eat most foods,
+                                        however, corn-on-the-cob, lettuce and steak are examples of foods that may be
+                                        difficult to eat. As specialists, we are able to provide you with techniques and
+                                        materials that can maximize denture chewing efficiency. Chewing efficiency can
+                                        also be enhanced by utilizing dental implants.
+                                    </li></p>
+
+                                    <p><li>
+                                        <strong>Future bone loss </strong> - Long term studies show that when teeth are lost, the bone that
+                                        once supported those teeth will be lost. This bone loss will continue over time,
+                                        with a majority of the initial bone loss occurring within the first year of tooth loss
+                                        and a gradual continuation of bone loss throughout life. This is especially true in
+                                        the lower jaw where bone loss occurs 4 times as rapidly as the upper jaw. This
+                                        bone loss makes wearing dentures a problem that can get worse as years pass.
+
+                                        As specialists, we utilize impression making techniques that place denture
+                                        pressure in the areas of the mouth that are best suited to bear the stress load of a
+                                        denture and minimize bone loss. Placing dental implants will also minimize if not
+                                        eliminate this bone loss. Dental implants require an adequate quantity and quality
+                                        of bone for long term success and it is advantageous to place implants sooner
+                                        than later to avoid the need for bone grafting.
+                                    </li></p>
+                                    <p><li>
+                                        <strong>Thermal discrimination</strong> - 
+                                        Because the acrylic base portion of a removable
+                                        prosthesis may cover gum tissue that was not covered before, it is important to
+                                        know that you may not be able to feel hot and cold as you once could. Some
+                                        patients are disappointed that coffee, soup, ice cream and other items has lost its
+                                        appeal because they can no longer feel the temperature of these items.
+                                    </li></p>
+                                    <p><li>
+                                        <strong>Stereognosis</strong> - 
+                                        This refers to the ability to feel the shape of food and objects in
+                                        the mouth. Items such as ice cubes, hard candy, etc... have a recognizable size
+                                        and shape. Because dentures cover much of the gum tissue and their associated
+                                        mechano-receptors, the ability to recognize the shapes of objects in the mouth
+                                        will be diminished.
+                                    </li></p>
+                                </ol>
+                                
+                            </ul>
+                        </p>
+
+                    </div>
+
+
+                </div>
+                <div class="col-11 ml-5 mt-5 mb-5" id="patient_details">
+                    <div class="col-sm-12">
+                        <div class="col-sm-12" style="border-bottom: 1px solid #222;">
+                            <!--
+                                        <div class="mb-5 mt-4">
+                                            <div class="custom-control custom-checkbox mr-sm-2">
+                                                <input type="checkbox" class="custom-control-input" id="chkAgreePayment"
+                                                    ng-model="AgreePayment">
+                                                <label class="custom-control-label" for="chkAgreePayment">I agree</label>
+                                            </div>
+                                        </div>           
+                                        -->
+                            <div class="wrapper mb-1">
+                                <canvas id="signature-pad" class="signature-pad"></canvas>
+                            </div>
+                
+                            <div style="display: none;">
+                                <button id="save-png">Save as PNG</button>
+                                <button id="save-jpeg">Save as JPEG</button>
+                                <button id="save-svg">Save as SVG</button>
+                                <button id="draw">Draw</button>
+                                <button id="erase">Erase</button>
+                            </div>
+                
+                        </div>
+                        <label for="exampleFormControlTextarea1">Patients (or Responsible Party) Signature</label>
+                    </div>
+                </div>
+ 
+
+            </div>
+
+        </div>
+
+        <div class="container mb-5 boxboost" style="background-color:#fff; border:1px solid #d0d0d0; display: none;" id="patientConsentFormStatic">
+            <div class="mt-3 mb-5 text-center col-sm-12">
+                <h3>Extraction Consent</h3>
+            </div>
+            <div class="my-5">
+                <div class="row h-100 py-3 align-items-center justify-content-center" ng-class="alertType" ng-if="message !=='' && alertType == ''">
+                    <div class="col-sm-6">
+                        <div class="alert-box  mx-auto">
+                            <div class="alert alert-info alert-bg">
+                                <div class="alert-icon text-center">
+                                    <i class="fa fa-check-circle-o  fa-3x" aria-hidden="true"></i>
+                                </div>
+
+                                <div class="alert-message text-center">
+                                    <!--<strong>Success!</strong>-->Hi {[{FullName}]}, {[{message}]} 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>        
+                <img src='' id='canvasimage' class="staticImage"/>
+            </div>
+        </div>
+        
+        <div class="container mx-auto mb-2">
+            <div ng-class="alertType" id="alertWindow" class="alert alert-danger" ng-if="message !=='' && alertType != ''">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <i class="fa fa-times"></i> <strong>{[{messageStatus}]}! </strong> {[{message}]} <a href="#" class="alert-link"></a> !!
+            </div>    
+        </div>
+
+        <div class="modal-footer container">
+            <span id="updateStatus"></span>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnClose">Close</button>
+            <button type="button" class="btn btn-primary" id="clear">Clear</button>
+            <button id="btnDownload" class="btn btn-primary" ng-click="saveAsImage()">Submit</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        var element = $("#patientConsentForm"); // global variable
+
+        $("#btnDownload1").click(function () {
+            html2canvas(element, {
+                onrendered: function (canvas) {
+                    theCanvas = canvas;
+                    var pName = $('#pName').val();
+                    saveAs(canvas.toDataURL(), pName + '.png');
+                }
+            });
+        });
+
+        function saveAs(uri, filename) {
+            var link = document.createElement('a');
+            if (typeof link.download === 'string') {
+                link.href = uri;
+                link.download = filename;
+
+                //Firefox requires the link to be in the body
+                document.body.appendChild(link);
+
+                //simulate click
+                link.click();
+
+                //remove the link when done
+                document.body.removeChild(link);
+            } else {
+                window.open(uri);
+            }
+        }
+
+
+        $("#rdoPayfull").click(function(event) {
+            if ($(this).is(":checked")){
+                $('#rdoMonthlyPay6').prop('checked', false);
+                $('#rdoMonthlyPay12').prop('checked', false);
+                $('#rdoMonthlyPay18').prop('checked', false);
+            }
+        });
+
+        $("[data-dismiss]").on("click", function(){
+            $("." + $(this).attr("data-dismiss")).hide();
+        });
+
+        $('.close').click(function(){
+            $(this).parent().hide();
+        });
+
+
+    });
+
+</script>
+<script language="javascript" src="/bootstrap/js/signature/signature_pad.umd.js"></script>
+<script language="javascript" src="/bootstrap/js/signature/app.js"></script>

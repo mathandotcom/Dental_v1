@@ -1,0 +1,151 @@
+<script language="javascript" src="/bootstrap/js/account/signupApp.js"></script>
+<div class="col-md-6 mx-auto col-lg-4 px-0 loginbox">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-4 pb-3 mb-3 border-bottom boxcurve">
+        <h4 class="h4 sec-header text-uppercase">Update Profile</h4>
+    </div>
+    <div class="col-lg-10 col-sm-10 col-md-10 mx-auto" style="height: 70px">
+        {{#if messages.error }}
+            <div class="alert alert-danger m-2" role="alert">
+                {{messages.error}}
+            </div>
+        {{/if}}        
+    </div>
+    <div class="container py-1">
+        <div class="row">
+            <div class="col-md-12 mx-auto">
+                <form action="/updateuser" name="frmCustomer" method="POST">
+                    <div class="form-group row">
+                        <input type="hidden" id="id" name="id" value="{{user.id}}" />
+                        <div class="form-label-group col-sm-8 mx-auto"
+                            ng-class="{'has-error':frmCustomer.useremail.$invalid && frmCustomer.useremail.$dirty && showEmailError}">
+                            
+                            <input type="email" id="useremail" name="useremail" ng-model="acct.Email" class="form-control" placeholder="Email" required
+                                autofocus ng-minlength="5" ng-maxlength="100"
+                                ng-blur="showEmailError=frmCustomer.useremail.$invalid && !frmCustomer.useremail.$pristine"
+                                disabled>
+                            <label for="Email">Email</label>
+                        </div>
+                        <div class="errorMessage form-label-group col-sm-8 mx-auto">
+                            <div ng-messages="frmCustomer.useremail.$dirty && frmCustomer.useremail.$error"
+                                ng-show="showEmailError">
+                                <span class="error" ng-show="frmCustomer.useremail.$error.required">Email Id is
+                                    Required!</span>
+                                <span class="error" ng-show="frmCustomer.useremail.$error.email">Invalid Email Id!</span>
+                                <span class="error" ng-show="frmCustomer.useremail.$error.maxlength">Maximum length required
+                                    is 100</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="form-label-group col-sm-8 mx-auto" ng-class="{'has-error':frmCustomer.password.$invalid && frmCustomer.password.$dirty && showPassError}">
+
+                            <input type="password" id="password" name="password" class="form-control" placeholder="password"
+                                required autofocus ng-minlength="8" ng-maxlength="250"
+                                ng-blur="showPassError=frmCustomer.password.$invalid && (!frmCustomer.password.$pristine)"
+                                disabled>
+                            <label for="Password">password</label>
+                        </div>
+                        <div class="errorMessage form-label-group col-sm-8 mx-auto">
+                            <div ng-messages="frmCustomer.password.$dirty && frmCustomer.password.$error"
+                                ng-show="showPassError">
+                                <div ng-message="required" class="has-error">
+                                    <span class="error">Password is Required!</span>
+                                </div>
+                                <div ng-message="minlength" class="has-error">
+                                    <span class="error">Minimum length required is 8</span>
+                                </div>
+                                <div ng-message="maxlength" class="has-error">
+                                    <span class="error">Maximum length required is 25</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="form-label-group col-sm-8 mx-auto">
+                            <input type="text" id="firstname" name="firstname" ng-model="acct.FirstName" class="form-control" placeholder="First Name"
+                                required autofocus ng-minlength="3" ng-maxlength="100" value="{{user.firstname}}"
+                                ng-blur="showFirstNameError=frmCustomer.firstname.$invalid && (!frmCustomer.firstname.$pristine)">
+                            <label for="FirstName">First Name</label>
+                        </div>
+                        <div class="errorMessage form-label-group col-sm-8 mx-auto">
+                            <div ng-messages="frmCustomer.firstname.$dirty && frmCustomer.firstname.$error"
+                                ng-show="showFirstNameError">
+                                <span class="error" ng-show="frmCustomer.firstname.$error.required">First Name is
+                                    Required!</span>
+                                <span class="error" ng-show="frmCustomer.firstname.$error.minlength">Minimum length
+                                    required is 3</span>
+                                <span class="error" ng-show="frmCustomer.firstname.$error.maxlength">Maximum length
+                                    required is 100</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="form-label-group col-sm-8 mx-auto">
+                            <input type="text" id="lastname" name="lastname" ng-model="acct.LastName" class="form-control" placeholder="Last Name" required
+                                autofocus ng-minlength="2" ng-maxlength="100"  value="{{user.lastname}}"
+                                ng-blur="showLastNameError=frmCustomer.lastname.$invalid && (!frmCustomer.lastname.$pristine)">
+                            <label for="LastName">Last Name</label>
+                        </div>
+                        <div class="errorMessage form-label-group col-sm-8 mx-auto">
+                            <div ng-messages="frmCustomer.lastname.$dirty && frmCustomer.lastname.$error"
+                                ng-show="showLastNameError">
+                                <span class="error" ng-show="frmCustomer.lastname.$error.required">Last Name is
+                                    Required!</span>
+                                <span class="error" ng-show="frmCustomer.lastname.$error.minlength">Minimum length
+                                    required is 2</span>
+                                <span class="error" ng-show="frmCustomer.lastname.$error.maxlength">Maximum length
+                                    required is 100</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="form-label-group col-sm-8 mx-auto">
+                            <input type="text" id="phone" name="phone" ng-model="acct.Phone" class="form-control" placeholder="Phone Number" required
+                                autofocus ng-minlength="10" ng-maxlength="10" maxlength="10" onkeypress="return isNumber(event)"  value="{{user.phone}}"
+                                ng-blur="showPhoneError=frmCustomer.phone.$invalid && (!frmCustomer.phone.$pristine)">
+                            <label for="Phone">Phone Number</label>
+                        </div>
+                        <div class="errorMessage form-label-group col-sm-8 mx-auto">
+                            <div ng-messages="frmCustomer.phone.$dirty && frmCustomer.phone.$error"
+                                ng-show="showPhoneError">
+                                <span class="error" ng-show="frmCustomer.phone.$error.required">Last Name is
+                                    Required!</span>
+                                <span class="error" ng-show="frmCustomer.phone.$error.minlength">Minimum length required
+                                    is 10</span>
+                                <span class="error" ng-show="frmCustomer.phone.$error.maxlength">Maximum length required
+                                    is 10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row"></div>
+                    <div class="col-lg-8 mx-auto">
+
+                        
+                        <button type="submit" class="btn btn-primary" style="margin-left: -10px"
+                            ng-disabled="frmCustomer.$invalid">
+                            Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{#if user}}
+<script>
+    $(function () {
+    var scope = angular.element("#MainWrap").scope();
+    scope.$apply(function () {
+        scope.acct.Email = '{{user.username}}';
+        scope.acct.Email = '{{user.username}}';
+        //scope.acct.Password = '{{user.password}}';
+        scope.acct.FirstName = '{{user.firstname}}';
+        scope.acct.LastName = '{{user.lastname}}';
+        scope.acct.Phone = '{{user.phone}}';
+    });
+});
+
+</script>
+{{/if}}

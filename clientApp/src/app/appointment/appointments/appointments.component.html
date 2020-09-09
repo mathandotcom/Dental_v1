@@ -1,0 +1,499 @@
+<div class="container-fluid">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-right">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Metrica</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Appointments</a></li>
+                        <li class="breadcrumb-item active">Appointments</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">All Appointments</h4>
+            </div><!--end page-title-box-->
+        </div><!--end col-->
+    </div>
+    <!-- end page title end breadcrumb -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div style="min-height: 3rem;">
+                        <div *ngIf="errorMessage" class="alert" [ngClass]="alertType"><span class="fa fa-info-circle mr-2" style="font-size: 16px;"></span>{{errorMessage}}</div>
+                    </div>
+                    <!-- <button type="button" class="btn btn-primary px-4 mt-0 mb-3" data-toggle="modal" data-animation="bounce" data-target=".bs-example-modal-lg"><i class="mdi mdi-plus-circle-outline mr-2"></i>Add New Appointment</button> -->
+                    <div class="row mt-4 ml-5">
+                        <div class="col-sm-3" style="margin-top: 12px;margin-bottom: 19px;">
+                            <div class="radio radio-primary form-check-inline mr-5">
+                                <input type="radio" id="inlineRadio1" value="option1" name="radioInline" checked="" (click)="selectUpcoming()"> <label
+                                    for="inlineRadio1">All Upcoming</label></div>
+                            <div class="radio radio-primary form-check-inline"><input type="radio" id="inlineRadio2" value="option2" name="radioInline" (click)="selectByDate()">
+                                <label for="inlineRadio2">By date</label></div>
+                        </div>
+                        <div class="col-sm-5" *ngIf="isByDate">
+                            <div class="form-group form-inline">
+                                <label for="example-text-input" class="col-form-label text-left mr-1">Date: </label>
+                                <ng2-flatpickr id="appDate" name="appDate" class="form-control flatpickr flatpickr-input active"
+                                    [(ngModel)]="appointmentDate" (change)="getAppSelected()" #appDatePicker [config]="appDateOption"
+                                    placeholder="Select Date..">
+                                </ng2-flatpickr>
+
+                                <div class="btn-toolbar mb-2 mb-md-0 ml-2">
+                                    <div class="btn-group mr-2">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary text-center uitooltip"
+                                            (click)="previousdate()" title="Previous date" data-toggle="tooltip" data-placement="bottom" style="
+                                            line-height: 1.7;"><i
+                                                class="fas fa-angle-left fa-2x ml-1 mr-1" aria-hidden="true"></i></button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary uitooltip" (click)="nextdate()"
+                                            title="Next date" data-toggle="tooltip" data-placement="bottom"  style="
+                                            line-height: 1.7;"><i
+                                                class="fas fa-angle-right fa-2x ml-1 mr-1" aria-hidden="true"></i></button>
+                                        <button type="button" class="btn btn-outline-secondary uitooltip" (click)="reloadAppointment()"
+                                            title="Refresh" data-toggle="tooltip" data-placement="bottom"  style="
+                                            line-height: 1.7;"><i class="fas fa-sync ml-1 mr-1"
+                                                aria-hidden="true" style="font-size: 17px;"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive mt-3">
+                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="datatable1" class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Patient Name</th>
+                                    <th>Time</th>
+                                    <!-- <th>Doctor Name</th> -->
+                                    <th>Confirmed?</th>
+                                    <th>Mobile No</th>
+                                    <!-- <th>Email</th> -->
+                                    <th>Remind</th>
+                                    <th>Status</th>
+                                    <th>Tasks</th>
+                                    <th class="text-center" style="width: 10rem;">Action</th>
+                                </tr>
+                                <!--end tr-->
+                            </thead>
+                        
+                            <tbody>
+                                <tr *ngFor="let appointment of appointments; index as i">
+                                    <!-- <td>{{appointment.patient.firstname}} {{appointment.patient.middlename}} {{appointment.patient.lastname}}</td> -->
+                                    <td>{{appointment.patient_name}}</td>
+                                    <td style="width: 15%;" nowrap>{{appointment.date}} @ {{appointment.time.substring(0,5)}}</td>
+                                    <!-- <td><img src="./assets/assets/images/users/user-1.jpg" alt="" class="thumb-sm rounded-circle mr-2">{{appointment.status}}</td> -->
+                                    <td class="uitooltip" style="width: 10%;"><i class="{{appointment.confirm_icon}} font-18 ml-4" placement="bottom" ngbTooltip="{{appointment.confirmed_on_title}}"></i></td>
+                                    
+                                    <td>{{appointment.cell}}</td>
+                                    <!-- <td>{{appointment.patient.email}}</td> -->
+
+                                    <td class="">
+                                        <a id="consent" *ngIf="appointment.confirm_status !== 'Confirmed'" placement="bottom" ngbTooltip="Remind" class="icon uitooltip mt-1 mb-1 ml-3"  (click)="sendReminder(appointment, 'sms')">
+                                            <i class="far fa-comment-dots fa-hover-hidden font-18 status-green"></i>
+                                            <i class="fas fa-comment-dots fa-hover-show font-18 status-green"></i>
+                                        </a>                                        
+                                    </td>
+                                    <td style="width: 10%;">
+                                        <div class="badge badge-pill badge-inline ml-1 pl-2 pr-2" [ngClass]="appointment.displayStatusColor" placement="bottom" ngbTooltip="{{appointment.smsReminderTitle}}">{{appointment.displayStatus}}</div>
+                                    </td>
+                                    <td style="width: 15%;">{{appointment.task}}</td>
+                                    <td class="text-center" nowrap>
+                                        <button type="button"class="btn btn-sm mr-2" placement="bottom" ngbTooltip="Confirm" (click)="confirmAppointment(appointment)"  [ngClass]="{'btn-secondary disabled': appointment.confirm_status==='Confirmed', 'btn-primary': appointment.confirm_status !== 'Confirmed'}" [disabled]="appointment.confirm_status==='Confirmed'">
+                                            <i class="fas fa-check font-10"></i>
+                                        </button>
+                                        <button type="button"class="btn btn-sm btn-danger mr-2" placement="bottom" ngbTooltip="Reschedule" (click)="reschedule(rescheduleAppointmentModal, appointment)" [ngClass]="{'btn-secondary disabled': appointment.confirm_status==='Complete', 'btn-danger': appointment.confirm_status !== 'Complete'}" [disabled]="appointment.confirm_status==='Complete'">
+                                            <i class="fas fa-trash-alt font-10"></i>
+                                        </button>
+                                        <button type="button"class="btn btn-sm mr-2" placement="bottom" ngbTooltip="Request feedback" (click)="requestFeedback(appointment, 'sms')" [ngClass]="{'btn-outline-secondary disabled': appointment.aptStatus !== 2, 'btn-outline-success': appointment.aptStatus === 2}" [disabled]="appointment.aptStatus !== 2">
+                                            <i class="far fa-comment-alt font-10"></i>
+                                        </button>
+                                        <button type="button"class="btn btn-sm mr-2" placement="bottom" ngbTooltip="Reviews link" (click)="sendReviewsLink(appointment, 'sms')" [ngClass]="{'btn-outline-secondary disabled': appointment.aptStatus !== 2, 'btn-outline-pink': appointment.aptStatus === 2}" [disabled]="appointment.aptStatus !== 2">
+                                            <i class="fas fa-star-half-alt font-10"></i>
+                                        </button>                                        
+                                    </td>
+                                </tr>
+                                <!--end tr-->
+                            </tbody>
+                        </table>
+                    </div>                                         
+                </div><!--end card-body--> 
+            </div><!--end card--> 
+        </div> <!--end col-->                               
+    </div><!--end row-->   
+
+</div><!-- container -->
+
+<!--  Modal content for reschedule appointment -->
+<ng-template #rescheduleAppointmentModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="editProfileLabel">Reschedule appointment for {{modal_patient_name}} ({{modal_patient_id}})</h5>
+        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row mt-5">
+            <div class="col-md-5">
+                <div class="form-group ml-2 row">
+                    <label for="apptdatetime" class="col-sm-5 col-form-label">Patient Name :</label>
+                    <div class="">
+                        <label for="apptdatetime" class="col-form-label">{{modal_patient_name}} ({{modal_patient_id}})</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="form-group row">
+                    <label for="apptdatetime" class="col-sm-4 col-form-label">Current appointment :</label>
+                    <div class="">
+                        <label for="apptdatetime" class="col-form-label ml-2">{{modal_current_appointment_date}} @ {{modal_current_appointment_time}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group ml-2 row">
+                    <label for="apptdatetime" class="col-sm-5 col-form-label">Scheduled on :</label>
+                    <div class="">
+                        <label for="apptdatetime" class="col-form-label">{{modal_scheduled_date}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="form-group row">
+                    <label for="apptdatetime" class="col-sm-4 col-form-label">Reschedule appointment :</label>
+                    <div class="col-sm-6">
+                        <ng2-flatpickr id="popupDate" name="rescheduleDateTime" class="form-control flatpickr flatpickr-input active"
+                        #rescheduleDatePicker="ngModel" [config]="rescheduleDateOptions" placeholder="Select Date.." [(ngModel)]="rescheduleDateTime">
+                        </ng2-flatpickr>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-md-5">
+                <div class="form-group ml-2 row">
+                    <label for="apptdatetime" class="col-sm-5 col-form-label">Confirmation status :</label>
+                    <div class="">
+                        <label for="apptdatetime" class="col-form-label"><i class="{{modal_confirm_icon}} font-18 ml-4" placement="bottom" ngbTooltip="{{modal_confirmed_on_title}}"></i></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="form-group row">
+                    <label for="apptdatetime" class="col-sm-4 col-form-label">Reason for Reschedule :</label>
+                    <div class="col-sm-6">
+                        <textarea class="form-control" id="reason" required="" [(ngModel)]="reasonReschedule" name="reasonReschedule"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label for="apptdatetime" class="col-sm-4 col-form-label text-right">Patient Name</label>
+                    <div class="col-sm-4">
+                        <label for="apptdatetime" class="col-form-label">{{modal_patient_name}} ({{modal_patient_id}})</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="apptdatetime" class="col-sm-4 col-form-label text-right">Current appointment</label>
+                    <div class="col-sm-4">
+                        <label for="apptdatetime" class="col-form-label">{{modal_current_appointment_date}} @ {{modal_current_appointment_time}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="apptdatetime" class="col-sm-4 col-form-label text-right">Reschedule appointment</label>
+                    <div class="col-sm-4">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="apptdatetime" class="col-sm-4 col-form-label text-right">Reason for Reschedule</label>
+                    <div class="col-sm-4">
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div> -->
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary" (click)="rescheduleApp()" aria-label="Close">Submit</button>
+        <button type="button" class="btn btn-sm btn-danger" (click)="modal.dismiss('Cross click')" aria-label="Close">Close</button>
+    </div>
+</ng-template>
+<!--  Modal content end for reschedule appointment -->
+
+<!--  Modal content for the above example -->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mt-0" id="myLargeModalLabel">Add New Appointment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="PatientName">Patient Name</label>
+                                <input type="text" class="form-control" id="PatientName" required="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="DoctorName_select" class="mr-2">Doctor Name</label>
+                                <select class="custom-select" id="DoctorName_select">
+                                    <option selected="">-- Select --</option>
+                                    <option value="1">Dr.Thomas Fant</option>
+                                    <option value="2">Dr.Justin Williams</option>
+                                    <option value="3">Dr.Aretha Garland</option>
+                                    <option value="4">Dr.Lea Sanchez</option>
+                                    <option value="5">Dr.Helen White</option>
+                                    <option value="6">Dr.William Gonzalez</option>
+                                </select>
+                            </div>                                    
+                        </div> 
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="Department_select" class="mr-2">Department</label>
+                                <select class="custom-select" id="Department_select">
+                                    <option selected="">-- Select --</option>
+                                    <option value="1">Orthopedic</option>
+                                    <option value="2">Fizioterapie</option>
+                                    <option value="3">Cardiology</option>
+                                    <option value="4">Gynaecology</option>
+                                    <option value="5">Neurology</option>
+                                    <option value="6">Psychology</option>
+                                </select>
+                            </div>
+                        </div>                                    
+                    </div>
+                    <div class="row">  
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="Age">Age</label>
+                                <input type="text" class="form-control" id="Age" required="">
+                            </div>
+                        </div>                                 
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="AppoDate">Date</label>
+                                <input type="text" class="form-control" id="AppoDate" required="">
+                            </div>
+                        </div>      
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="AppoTime">Time</label>
+                                <input type="text" class="form-control" id="AppoTime" required="">
+                            </div>
+                        </div>  
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="PhoneNo">Phone No</label>
+                                <input type="text" class="form-control" id="PhoneNo" required="">
+                            </div>
+                        </div>
+                    </div> 
+                    <button type="button" class="btn btn-sm btn-primary">Save</button>  
+                    <button type="button" class="btn btn-sm btn-danger">Delete</button>             
+                </form>  
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal --> 
+
+<!--rightbar-start-->
+
+<!--  Modal content for the above example -->
+<div class="modal modal-rightbar fade" tabindex="-1" role="dialog" aria-labelledby="MetricaRightbar" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mt-0" id="MetricaRightbar">Appearance</h5>
+                <button type="button" class="btn btn-sm btn-soft-primary btn-circle btn-square" data-dismiss="modal" aria-hidden="true"><i class="mdi mdi-close"></i></button>
+            </div>
+            <div class="modal-body">                                
+               <!-- Nav tabs -->
+               <ul class="nav nav-pills nav-justified mt-2 mb-4" role="tablist">
+                    <li class="nav-item waves-effect waves-light">
+                        <a class="nav-link active" data-toggle="tab" href="#ActivityTab" role="tab">Activity</a>
+                    </li>
+                    <li class="nav-item waves-effect waves-light">
+                        <a class="nav-link" data-toggle="tab" href="#TasksTab" role="tab">Tasks</a>
+                    </li>
+                    <li class="nav-item waves-effect waves-light">
+                        <a class="nav-link" data-toggle="tab" href="#SettingsTab" role="tab">Settings</a>
+                    </li>
+                </ul>                                
+                
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane active " id="ActivityTab" role="tabpanel">
+                        <div class="bg-light mx-n3">
+                            <img src="./assets/assets/images/small/img-1.gif" alt="" class="d-block mx-auto my-4" height="180">
+                        </div>
+                        <div class="slimscroll scroll-rightbar">
+                            <div class="activity">
+                                <div class="activity-info">
+                                    <div class="icon-info-activity">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline bg-soft-success"></i>
+                                    </div>
+                                    <div class="activity-info-text mb-2">
+                                        <div class="mb-1">
+                                            <small class="text-muted d-block mb-1">10 Min ago</small>
+                                            <a href="#" class="m-0 w-75">Task finished</a>                                                            
+                                        </div>
+                                        <p class="text-muted mb-2 text-truncate">There are many variations of passages.</p>
+                                    </div>
+                                </div> 
+
+                                <div class="activity-info">
+                                    <div class="icon-info-activity">
+                                        <i class="mdi mdi-timer-off bg-soft-pink"></i>
+                                    </div>
+                                    <div class="activity-info-text mb-2">
+                                        <div class="mb-1">
+                                            <small class="text-muted d-block mb-1">50 Min ago</small>
+                                            <a href="#" class="m-0 w-75">Task Overdue</a>                                                            
+                                        </div>
+                                        <p class="text-muted mb-2 text-truncate">There are many variations of passages.</p>
+                                        <span class="badge badge-soft-secondary">Design</span>
+                                        <span class="badge badge-soft-secondary">HTML</span>
+                                    </div>                                                   
+                                </div>
+                                <div class="activity-info">
+                                    <div class="icon-info-activity">
+                                        <i class="mdi mdi-alert-decagram bg-soft-purple"></i>
+                                    </div>
+                                    <div class="activity-info-text mb-2">
+                                        <div class="mb-1">
+                                            <small class="text-muted d-block mb-1">10 hours ago</small>
+                                            <a href="#" class="m-0 w-75">New Task</a>                                                            
+                                        </div>
+                                        <p class="text-muted mb-2 text-truncate">There are many variations of passages.</p>
+                                    </div>        
+                                </div>   
+
+                                <div class="activity-info">
+                                    <div class="icon-info-activity">
+                                        <i class="mdi mdi-clipboard-alert bg-soft-warning"></i>
+                                    </div>
+                                    <div class="activity-info-text mb-2">
+                                        <div class="mb-1">
+                                            <small class="text-muted d-block mb-1">yesterday</small>
+                                            <a href="#" class="m-0 w-75">New Comment</a>                                                            
+                                        </div>
+                                        <p class="text-muted mb-2 text-truncate">There are many variations of passages.</p>
+                                    </div>    
+                                </div>  
+                                <div class="activity-info">
+                                    <div class="icon-info-activity">
+                                        <i class="mdi mdi-clipboard-alert bg-soft-secondary"></i>
+                                    </div>
+                                    <div class="activity-info-text mb-2">
+                                        <div class="mb-1">
+                                            <small class="text-muted d-block mb-1">01 feb 2020</small>
+                                            <a href="#" class="m-0 w-75">New Lead Meting</a>                                                            
+                                        </div>
+                                        <p class="text-muted mb-2 text-truncate">There are many variations of passages.</p>
+                                    </div>    
+                                </div>   
+                                <div class="activity-info">
+                                    <div class="icon-info-activity">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline bg-soft-success"></i>
+                                    </div>
+                                    <div class="activity-info-text mb-2">
+                                        <div class="mb-1">
+                                            <small class="text-muted d-block mb-1">26 jan 2020</small>
+                                            <a href="#" class="m-0 w-75">Task finished</a>                                                            
+                                        </div>
+                                        <p class="text-muted mb-2 text-truncate">There are many variations of passages.</p>
+                                    </div>
+                                </div>                                                                                                            
+                            </div><!--end activity-->
+                        </div><!--end activity-scroll-->
+                    </div><!--end tab-pane-->
+                    <div class="tab-pane" id="TasksTab" role="tabpanel">
+                        <div class="m-0">
+                            <div id="rightbar_chart" class="apex-charts"></div>                                            
+                        </div>  
+                        <div class="text-center mt-n2 mb-2">
+                            <button type="button" class="btn btn-soft-primary">Create Project</button>
+                            <button type="button" class="btn btn-soft-primary">Create Task</button>
+                        </div>
+                        <div class="slimscroll scroll-rightbar">
+                            <div class="p-2">
+                                <div class="media mb-3">
+                                    <img src="./assets/assets/images/widgets/project3.jpg" alt="" class="thumb-lg rounded-circle">                                      
+                                    <div class="media-body align-self-center text-truncate ml-3">
+                                        <p class="text-success font-weight-semibold mb-0 font-14">Project</p>
+                                        <h4 class="mt-0 mb-0 font-weight-semibold text-dark font-18">Payment App</h4>                                            
+                                    </div><!--end media-body-->
+                                </div>
+                                <span><b>Deadline:</b> 02 June 2020</span>
+                                <a href="javascript: void(0);" class="d-block mt-3">
+                                    <p class="text-muted mb-0">Complete Tasks<span class="float-right">75%</span></p>
+                                    <div class="progress mt-2" style="height: 4px;">
+                                        <div class="progress-bar bg-secondary" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </a>                                            
+                            </div>
+                            <hr class="hr-dashed">                                            
+                        </div>                                        
+                    </div><!--end tab-pane-->
+                    <div class="tab-pane" id="SettingsTab" role="tabpanel">
+                        <div class="p-1 bg-light mx-n3">
+                            <h6 class="px-3">Account Settings</h6>
+                        </div>
+                        <div class="p-2 text-left mt-3">
+                            <div class="custom-control custom-switch switch-primary mb-3">
+                                <input type="checkbox" class="custom-control-input" id="settings-switch1" checked="">
+                                <label class="custom-control-label" for="settings-switch1">Auto updates</label>
+                            </div>
+
+                            <div class="custom-control custom-switch switch-primary mb-3">
+                                <input type="checkbox" class="custom-control-input" id="settings-switch2">
+                                <label class="custom-control-label" for="settings-switch2">Location Permission</label>
+                            </div>
+
+                            <div class="custom-control custom-switch switch-primary mb-3">
+                                <input type="checkbox" class="custom-control-input" id="settings-switch3" checked="">
+                                <label class="custom-control-label" for="settings-switch3">Show offline Contacts</label>
+                            </div>    
+                        </div>
+                        <div class="p-1 bg-light mx-n3">
+                            <h6 class="px-3">General Settings</h6>
+                        </div>
+                        <div class="p-2 text-left mt-3">
+                            <div class="custom-control custom-switch switch-primary mb-3">
+                                <input type="checkbox" class="custom-control-input" id="settings-switch4" checked="">
+                                <label class="custom-control-label" for="settings-switch4">Show me Online</label>
+                            </div>
+
+                            <div class="custom-control custom-switch switch-primary mb-3">
+                                <input type="checkbox" class="custom-control-input" id="settings-switch5">
+                                <label class="custom-control-label" for="settings-switch5">Status visible to all</label>
+                            </div>
+
+                            <div class="custom-control custom-switch switch-primary mb-3">
+                                <input type="checkbox" class="custom-control-input" id="settings-switch6" checked="">
+                                <label class="custom-control-label" for="settings-switch6">Notifications Popup</label>
+                            </div> 
+                        </div>
+                    </div><!--end tab-pane-->
+                </div> <!--end tab-content--> 
+            </div><!--end modal-body-->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal --> 
+<i appLoadScript [script]="'./assets/assets/js/app.js'"></i>
+<i appLoadScript [script]="'./assets/assets/custom/appointment-form.js'"></i>

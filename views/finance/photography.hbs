@@ -1,0 +1,166 @@
+<link rel="stylesheet" href="/bootstrap/css/signature/signature-custom.css">
+<script language="javascript" src="/bootstrap/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+<script language="javascript" src="/bootstrap/js/finance/consentApp.js"></script>
+<script language="javascript" src="/bootstrap/js/html2canvas1.0.0.js"></script>
+
+<script language="javascript" src="/bootstrap/js/base64.js"></script>
+<script language="javascript" src="/bootstrap/js/canvas2image.js"></script>
+<input type="hidden" value="{{patientId}}" id="patientId" ng-model="PatientId" />
+<input type="hidden" value="{{consenttype}}" id="consenttype" ng-model="ConsentType" />
+
+
+<div class="container-fluid section">
+    <div class="row">       
+        <div class="container mb-5 boxboost" style="background-color:#fff; border:1px solid #b0b0b0" id="patientConsentForm">
+            <div class="row">
+                <div class="mt-3 mb-5 text-center col-sm-12">
+                    <h3>{{title}}</h3>
+                </div>
+                <input type="hidden" name="pName", id="pName" value="{[{FullName}]}">
+
+                <!--
+                <div class="col-lg-10 col-sm-10 col-md-10 mx-auto mb-2" style="min-height: 10px">
+                    <div ng-class="alertType" class="m-2" role="alert" ng-if="message !=='' && alertType != ''">
+                        <i class="fa fa-exclamation-circle mr-1" style="font-size: 1.3em"></i>
+                        <span>{[{message}]}</span>
+                    </div>
+                </div>
+                -->
+
+                <div class="col-10 ml-5 mb-4 cntpg1" id="patient_details">
+                    <table class="table table-bordered table-striped border-light mb-5 col-9" style="border-color:#f5f5f5">
+                        <tr>
+                            <td>Patient Name</td>
+                            <td>{[{FullName}]}</td>
+                        </tr>
+                        <tr>
+                            <td>Requested by</td>
+                            <td>{{user.firstname}} {{user.lastname}}</td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td>{[{currentDate | date:'MM/dd/yyyy HH:mm:ss'}]}</td>
+                        </tr>
+                        <tr>
+                            <td>Tooth Number(s)</td>
+                            <td>{[{2}]}</td>
+                        </tr>
+                    </table>
+                    <p class="font-weight-bold mt-4 mb-1">Patient Photography</p>
+
+                    <div class="mt-2">
+                        <p>
+                            I grant Dr. {{doctorname}} and his/her practice permission to take and use photographs and digital images of me for the purpose of:
+                        </p>
+                        <p>
+                            <input type="checkbox" id=""/> Teaching (i.e. Educational materials)
+                        </p>
+                        <p>
+                            <input type="checkbox" id=""/> Marketing (i.e.  Web site, brochures, etc.)
+                        </p>
+                        <p>
+                            <input type="checkbox" id=""/> Other:
+                        </p>
+
+                        <p>
+                            I understand that once my photograph(s) or digital image(s) have been released, Dr. {{doctorname}} and his/her practice may no longer have control over them, and federal or state privacy laws may no longer protect the information that was released.
+                        </p>
+
+                        <p>
+                            I may cancel this authorization to the extent allowed by law.  If I do, I understand that the doctor or practice may have already used my photograph(s) or digital image(s) prior to me canceling this authorization, which would not prohibit any release done prior to the date of cancelation.  
+                        </p>
+
+                        <p>
+                            To cancel this agreement, I must write a letter to the doctor or practice advising of my wish to cancel my authorization to release photograph(s) or digital image(s) taken of me by this practice.  I (or my authorized representative) must sign and date the letter.
+                        </p>
+
+                        <p>
+                            By signing below you acknowledge that you understand the information presented, have had all your questions answered satisfactorily, and give consent to perform this procedure.
+                        </p>
+
+                        <p>
+                            If this authorization has not been canceled, it will expire <u>10</u> days after the date signed.
+                        </p>
+
+                    </div>
+
+
+                </div>
+                <div class="col-11 ml-5 mt-5 mb-5" id="patient_details">
+                    <div class="col-sm-12">
+                        <div class="col-sm-12" style="border-bottom: 1px solid #222;">
+                            <!--
+                                        <div class="mb-5 mt-4">
+                                            <div class="custom-control custom-checkbox mr-sm-2">
+                                                <input type="checkbox" class="custom-control-input" id="chkAgreePayment"
+                                                    ng-model="AgreePayment">
+                                                <label class="custom-control-label" for="chkAgreePayment">I agree</label>
+                                            </div>
+                                        </div>           
+                                        -->
+                            <div class="wrapper mb-1">
+                                <canvas id="signature-pad" class="signature-pad"></canvas>
+                            </div>
+                
+                            <div style="display: none;">
+                                <button id="save-png">Save as PNG</button>
+                                <button id="save-jpeg">Save as JPEG</button>
+                                <button id="save-svg">Save as SVG</button>
+                                <button id="draw">Draw</button>
+                                <button id="erase">Erase</button>
+                            </div>
+                
+                        </div>
+                        <label for="exampleFormControlTextarea1">Patients (or Responsible Party) Signature</label>
+                    </div>
+                </div>
+ 
+
+            </div>
+
+        </div>
+
+        <div class="container mb-5 boxboost" style="background-color:#fff; border:1px solid #d0d0d0; display: none;" id="patientConsentFormStatic">
+            <div class="mt-3 mb-5 text-center col-sm-12">
+                <h3>Extraction Consent</h3>
+            </div>
+            <div class="my-5">
+                <div class="row h-100 py-3 align-items-center justify-content-center" ng-class="alertType" ng-if="message !=='' && alertType == ''">
+                    <div class="col-sm-6">
+                        <div class="alert-box  mx-auto">
+                            <div class="alert alert-info alert-bg">
+                                <div class="alert-icon text-center">
+                                    <i class="fa fa-check-circle-o  fa-3x" aria-hidden="true"></i>
+                                </div>
+
+                                <div class="alert-message text-center">
+                                    <!--<strong>Success!</strong>-->Hi {[{FullName}]}, {[{message}]} 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>        
+                <img src='' id='canvasimage' class="staticImage"/>
+            </div>
+        </div>
+        
+        <div class="container mx-auto mb-2">
+            <div ng-class="alertType" id="alertWindow" class="alert alert-danger" ng-if="message !=='' && alertType != ''">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <i class="fa fa-times"></i> <strong>{[{messageStatus}]}! </strong> {[{message}]} <a href="#" class="alert-link"></a> !!
+            </div>    
+        </div>
+
+        <div class="modal-footer container">
+            <span id="updateStatus"></span>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnClose">Close</button>
+            <button type="button" class="btn btn-primary" id="clear">Clear</button>
+            <button id="btnDownload" class="btn btn-primary" ng-click="saveAsImage()">Submit</button>
+        </div>
+    </div>
+</div>
+
+
+<script language="javascript" src="/bootstrap/js/signature/signature_pad.umd.js"></script>
+<script language="javascript" src="/bootstrap/js/signature/app.js"></script>
+<script language="javascript" src="/bootstrap/js/signature/savecanvas.js"></script>

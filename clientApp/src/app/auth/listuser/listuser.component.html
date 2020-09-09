@@ -1,0 +1,88 @@
+<div class="container-fluid">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-right">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Metrica</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Appointments</a></li>
+                        <li class="breadcrumb-item active">Appointments</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">All Users</h4>
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="pull-left m-2 d-inline p-2">
+                            <button type="button" class="btn btn-primary px-4 mt-0 mb-3" data-tooltip="tooltip"
+                                data-placement="right" (click)="openRegistrationPopup(registrationTemplateModel, null)">
+                                <i class="mdi mdi-plus-circle-outline mr-2"></i>
+                                Create New User
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered border-light mb-5" style="border-color:#f5f5f5">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Sr#</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Phone No</th>
+                                        <th>Email</th>
+                                        <th>Clinic</th>
+                                        <th>Role </th>
+                                        <th class="text-center" style="width: 10rem;">Action</th>
+                                    </tr>
+                                    <!--end tr-->
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let user of userModel;index as i">
+                                        <td>{{i + 1}}</td>
+                                        <td>{{user.firstname}}</td>
+                                        <td>{{user.lastname}}</td>
+                                        <td>{{user.phone}}</td>
+                                        <td>{{user.username}}</td>
+                                        <td>{{user.clinic_name}}</td>
+                                        <td>{{user.roleid}}</td>
+                                        <td class="text-center">
+                                            <a class="mr-2 pointer" (click)="editProfile(registrationTemplateModel, user)">
+                                                <i class="far fa-edit fa-hover-show text-primary font-18"></i>
+                                                <i class="fas fa-edit fa-hover-hidden text-primary font-18"></i>
+                                            </a>
+                                            <a class="mr-2 pointer" (click)="viewProfile(user)">
+                                            <i class="far fa-file-alt text-primary font-18" aria-hidden="true"></i>
+                                        </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--end card-body-->
+                </div>
+                <!--end card-->
+        <!--Send email-->
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
+
+    </div><!-- container -->
+</div>
+<ng-template #registrationTemplateModel let-modal>
+    <app-registration-modal ></app-registration-modal>
+</ng-template>
+
+  <!-- <app-registration-modal (reloadData)="reloadUserData()"></app-registration-modal> -->
+
+<i appLoadScript [script]="'../assets/assets/js/app.js'"></i>
+

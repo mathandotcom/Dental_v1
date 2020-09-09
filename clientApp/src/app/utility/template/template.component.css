@@ -1,0 +1,11 @@
+.ql-toolbar {
+    /*position: absolute;*/
+    bottom: 0;
+    width: 100%;
+    transform: translateY(100%);
+  }
+
+  quill-editor1 {
+    display: flex;
+    flex-direction: column-reverse;
+  }

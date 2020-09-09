@@ -1,0 +1,456 @@
+<link rel="stylesheet" href="/bootstrap/css/signature/signature-custom.css">
+<script language="javascript" src="/bootstrap/js/finance/optionApp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script language="javascript" src="/bootstrap/js/html2canvas1.0.0.js"></script>
+
+
+<input type="hidden" value="{{patientId}}" id="patientId" ng-model="PatientId" />
+<input type="hidden" id="treatmentPlanId" ng-model="TreatmentPlanId" />
+
+<div class="container-fluid section" id="topTable">
+    <div class="row">
+        <div class="container mb-4">
+            <div class="row">
+                <div class="w-100 boxboost px-3">
+                    <h5>Treatment plan details</h5>
+                    <div class="alert alert-danger m-2" role="alert" ng-if="errorMessage != ''">
+                        <i class="fa fa-exclamation-circle mr-1"></i>
+                        {[{errorMessage}]}
+                    </div>
+                    <table class="table table-striped table-bordered table-hover table-md mt-3" id="PendingDetails">
+                        <thead>
+                            <tr class="text-center">
+                                <th style="width:40px;">#</th>
+                                <th scope="col">Code</th>
+                                <th scope="col" style="width:40%;">Description</th>
+                                <th scope="col">Fees</th>
+                                <th scope="col">Pri. Insurance</th>
+                                <th scope="col">Patient Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbyPendingDetails">
+                            <tr ng-repeat="plan in TreatmentPlanDetails">
+                                <td style="width:40px;">{[{$index + 1}]}</td>
+                                <td scope="col">{[{plan.procCode}]}</td>
+                                <td scope="col">{[{plan.descript}]}</td>
+                                <td scope="col" class="text-right">{[{plan.procFee}]}</td>
+                                <td scope="col" class="text-right">{[{plan.insPayEst}]}</td>
+                                <td scope="col" class="text-right">{[{plan.patientEst}]}</td>
+                            </tr>
+                            <tr class="text-right">
+                                <td colspan="3">Total</td>
+                                <td scope="col" class="text-right">{[{TotalFees}]}</td>
+                                <td scope="col" class="text-right">{[{PrimaryInsurance}]}</td>
+                                <td scope="col" class="text-right">{[{PatientCost}]}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form name="frmCustomer" method="POST" class="form">
+    <div class="container mb-5 boxboost" style="background-color:#fff; display: block;" 
+        id="patientFinanceOption">
+        <div class="row">
+            <div class="mt-3 mb-5 text-center col-sm-12">
+                <h3>Treatment Plan and Payment Options</h3>
+            </div>
+            <input type="hidden" name="pName" , id="pName" value="{[{FullName}]}">
+            <div class="col-7 ml-5" id="patient_details">
+                <table class="table table-bordered table-striped border-light mb-5 inline" style="border-color:#f5f5f5">
+                    <tr>
+                        <td>Patient Name</td>
+                        <td>{[{FullName}]}</td>
+                    </tr>
+                    <tr>
+                        <td>Presented by</td>
+                        <td>{{user.firstname}} {{user.lastname}}</td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>{[{currentDate | date:'MM/dd/yyyy'}]}</td>
+                    </tr>
+                    <tr>
+                        <td>Treatment plan #</td>
+                        <td>{[{TreatmentPlanDetails[0].treatPlanNum}]}</td>
+                    </tr>
+                </table>
+                <p class="font-weight-bold mt-4 mb-1">Summary of Treatment Plan</p>
+                <table class="table table-bordered table-hover table-md mt-3 mb-5">
+                    <thead>
+                        <tr>
+                            <th style="width:50px">#</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="plan in TreatmentPlanDetails">
+                            <td>{[{$index+1}]}</td>
+                            <td>{[{plan.descript}]}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="row">
+                                    <div class="col-sm-9 text-right">Total Treatment Plan Fee</div>
+                                    <div class="col-sm-3 text-right">{[{TotalFees | currency:'$'}]}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-9 text-right">Primary Insurance</div>
+                                    <div class="col-sm-3 text-right">{[{PrimaryInsurance | currency:'$'}]}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-9 text-right">Insurance Discounts</div>
+                                    <div class="col-sm-3 text-right">{[{InsuranceDiscount | currency:'$'}]}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-9 text-right">Possible Insurance Payments</div>
+                                    <div class="col-sm-3 text-right">{[{InsurancePayment | currency:'$'}]}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-9 text-right">Your Total Amount Due</div>
+                                    <div class="col-sm-3 text-right">{[{PatientCost | currency:'$'}]}</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-4 text-center">
+                <img src="/images/dental.png" width="65%" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="mt-1 mb-1 ml-4 text-left col-sm-9">
+                <div class="form-row align-items-center">
+                    <div class="col-auto my-1">
+                        <label class="font-weight-bold" style="margin-top: 5px;">Payment Option</label>
+                    </div>
+                    <div class="col-auto ml-5 my-2">
+                        <div class="custom-control custom-checkbox mr-sm-2">
+                            <input type="checkbox" class="custom-control-input" id="chkMonthlyPay"
+                                ng-model="MonthlyPay">
+                            <label class="custom-control-label" for="chkMonthlyPay">Monthly Payment</label>
+                        </div>
+                    </div>
+                    <div class="col-auto my-1">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row pt-2 pb-2 mx-4 bg-pay-in-full align-items-center h-100">
+            <div class="col-sm-4">
+                <label class="chkcontainer">
+                    Pay in full
+                    <input type="radio" class="custom-radio" id="rdoPayfull" name="rdoPaymentMode" value="full"
+                        ng-model="paymentOption" />
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="col-sm-5">
+                {{!-- First col --}}
+            </div>
+            <div class="col-sm-3">
+                Total Due Today : {[{PatientCost | currency:'$'}]}
+            </div>
+        </div>
+        {{!-- <div class="row pt-2 pb-2 bg-pay-card align-items-center h-100">
+        <div class="col-sm-4 mt-3">
+            <label class="chkcontainer mt-auto">
+                Flexible Payments - More® Mastercard
+                <input type="radio" class="custom-radio" id="rdoFlex" name="rdoPaymentMode" />
+                <span class="checkmark"></span>
+            </label>
+
+
+        </div>
+        <div class="col-sm-5">
+            Great Rewards Card - 6 Months with 0% Interest - You decide payments
+        </div>
+        <div class="col-sm-3">
+            Total Due Today : {[{0 | currency:'$'}]}
+        </div>
+    </div> --}}
+        <div class="row pt-2 pb-2 mx-4 bg-pay-monthly align-items-center h-100" id="monthlypayment"
+            ng-show="MonthlyPay">
+            <div class="col-sm-4 align-middle">
+                <label class="chkcontainer">
+                    Monthly Payments - Denefits® Plan
+                    <input type="radio" class="custom-radio" id="rdoMonthly" name="rdoPaymentMode" value="month"
+                        ng-model="paymentOption" />
+                    <span class="checkmark"></span>
+                </label>
+
+            </div>
+            <div class="col-sm-5">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <p class="mt-3 mb-3">
+                            <label class="chkcontainer">
+                                6 Monthly Payments of
+                                <input type="radio" class="custom-radio" id="rdoMonthlyPay6" name="rdoPayType"
+                                    value="6" />
+                                <span class="checkmark"></span>
+                            </label>
+
+                        </p>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="mt-3 mb-3 col-sm-5 bg-light p-1 text-right">
+                            <span class="p-1"> {[{PatientCost/6 | currency:'$'}]}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-7">
+                        <p class="mt-3 mb-3">
+                            <label class="chkcontainer">
+                                12 Monthly Payments of
+                                <input type="radio" class="custom-radio" id="rdoMonthlyPay12" name="rdoPayType"
+                                    value="12" />
+                                <span class="checkmark"></span>
+                            </label>
+                        </p>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="mt-3 mb-3 col-sm-5 bg-light p-1 text-right">
+                            <span class="p-1"> {[{PatientCost/12 | currency:'$'}]}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-7">
+                        <p class="mt-3 mb-3">
+                            <label class="chkcontainer">
+                                18 Monthly Payments of
+                                <input type="radio" class="custom-radio" id="rdoMonthlyPay18" name="rdoPayType"
+                                    value="18" />
+                                <span class="checkmark"></span>
+                            </label>
+                        </p>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="mt-3 mb-3 col-sm-5 bg-light p-1 text-right">
+                            <span class="p-1"> {[{PatientCost/18 | currency:'$'}]}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                Down payment : {[{0 | currency:'$'}]}
+                <p class="mt-2 mb-2">Monthly payments include a 10% fee (compounded interest)</p>
+            </div>
+        </div>
+        <div class="row pt-4 pb-2 mx-4 align-items-center h-100">
+            <p>The Denefits Plan includes a management fee of 10%. I understand the Denefits and More Mastercard terms
+                of service and fees. I understand that the amount due is my responsibility and that insurance is billed
+                as a courtesy to assist me in paying my obligation. I understand that insurance figures provided are
+                estimates only. I understand that this estimate is NOT a guarantee of payment by my insurance. If the
+                insurance company pays more, I will receive a refund. If the insurance company pays less, I will either
+                receive a bill for the difference, have my credit card on file charged for the amount owed, or will have
+                my payment plan extended, whatever the dental practice deems best. I understand that if my insurance
+                company fails to pay within 60 days of the claim being submitted, the full amount due is my
+                responsibility and I will make payment in full. I understand that the above estimated fees are based on
+                my treatment plan as listed above. The treatment plan may change, altering the total cost of care. I
+                understand I will be charged a $40 cancellation fee if I cancel an appointment later than 10am the
+                previous business day.</p>
+        </div>
+        <div class="row pt-1 pb-1 mx-2 align-items-center h-100 mt-3">
+            <div class="col-sm-12">
+                <div class="mb-5">
+                    <div class="custom-control custom-checkbox mr-sm-2">
+                        <input type="checkbox" class="custom-control-input" id="chkAgreePayment"
+                            ng-model="AgreePayment">
+                        <label class="custom-control-label" for="chkAgreePayment">I Agree</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-3">
+                <div class="border-bottom">
+                    Date: {[{currentDate | date:'MM/dd/yyyy'}]}
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row pt-3 pb-5 mx-3 align-items-center h-100 mt-5">
+            <div class="col-sm-12">
+                <div class="col-sm-12" style="border-bottom: 1px solid #222;">
+                    <div class="wrapper mb-1">
+                        <canvas id="signature-pad" class="signature-pad"></canvas>
+                    </div>
+                    <div style="display: none;">
+                        <button id="save-png">Save as PNG</button>
+                        <button id="save-jpeg">Save as JPEG</button>
+                        <button id="save-svg">Save as SVG</button>
+                        <button id="draw">Draw</button>
+                        <button id="erase">Erase</button>
+                    </div>
+
+                </div>
+                <label for="exampleFormControlTextarea1">Patients (or Responsible Party) Signature</label>
+            </div>
+        </div>
+    </div>
+    <div class="container mb-5 boxboost" style="background-color:#fff; border:1px solid #d0d0d0; display: none;" 
+        id="patientFinanceOptionConfirmed">
+        <div class="col-12">
+            <div ng-class="alertType" class="alert text-center" ng-if="message !=='' && alertType !== ''">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <i class="fa fa-exclamation-triangle"></i> <strong>{[{messageStatus}]}! </strong> {[{message}]} <a href="#" class="alert-link"></a>
+            </div>
+        </div>
+        <img src="" title="payment option" id="imgPaymentOption" style="width: 100%;"/>
+    </div>
+    <div class="container mb-5 boxboost" style="background-color:#fff; border:1px solid #d0d0d0; display: none;"
+        id="patientFinanceOptionStatic">
+        <div class="mt-3 mb-5 text-center col-sm-12">
+            <h3>Treatment Plan and Payment Options</h3>
+        </div>
+        <div class="my-5">
+            <div class="row h-100 py-3 align-items-center justify-content-center" ng-class="alertType"
+                ng-if="message !=='' && alertType == ''">
+                <div class="col-sm-6">
+                    <div class="alert-box  mx-auto">
+                        <div class="alert alert-info alert-bg">
+                            <div class="alert-icon text-center">
+                                <i class="fa fa-check-circle-o  fa-3x" aria-hidden="true"></i>
+                            </div>
+                            <div class="alert-message text-center">
+                                <!--<strong>Success!</strong>-->Hi {[{FullName}]}, {[{message}]}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <img src='' id='canvasimage' class="staticImage" />
+        </div>
+    </div>
+
+    <div class="container mx-auto mb-2">
+        <div ng-class="alertType" class="alert alert-danger" ng-if="message !=='' && (message.indexOf('unable') >= 0 || message.indexOf('signature') >= 0 ) && alertType != ''">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <i class="fa fa-times"></i> <strong>{[{messageStatus}]}! </strong> {[{message}]} <a href="#" class="alert-link"></a> !!
+        </div>
+    </div>
+
+    <div class="modal-footer container">
+        <input type="hidden" name="_csrf" id="_csrf" value="{{csrfToken}}">
+        <!--<span id="updateStatus"></span>-->
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnClose">Close</button>
+        <button type="button" class="btn btn-primary" id="clear">Clear</button>
+        <a id="btnDownload" href="" class="btn btn-primary" ng-click="saveAsImage()">Submit</a>
+    </div>
+</form>
+
+<script>
+    $(function () {
+        var element = document.querySelector("#patientFinanceOption"); // global variable
+
+        $("#btnDownload1").click(async function () {
+            /*
+            html2canvas(element, {
+                onrendered: function (canvas) {
+                    theCanvas = canvas;
+                    var pName = $('#pName').val();
+                    //saveAsPng(canvas, pName + '.png');
+                    //sendImageData(canvas);
+                    document.getElementById('canvasimage').src = canvas.toDataURL('image/png');
+                }
+            });
+            */
+            /*
+            await html2canvas(document.querySelector("#topTable"), {scale:1}).then(function(canvas){
+                var pName = $('#pName').val();
+                //sendImageData(canvas);
+                document.body.appendChild(canvas);
+                document.getElementById('canvasimage').src = canvas.toDataURL('image/png');
+            });
+            */
+            await html2canvas(element, {
+                    scale:1,
+                    allowTaint:true,
+                    backgroundColor:null
+                    }).then(canvas => {
+                //document.body.appendChild(canvas);
+                document.getElementById('canvasimage').src = canvas.toDataURL('image/png');
+
+            });            
+            
+        });
+
+        function sendImageData(imageData)
+        {
+            //var canvas = document.getElementById('signature-pad');
+            var dataURL = imageData.toDataURL();
+            //var blob = dataURLToBlob(dataURL);
+            //var url = window.URL.createObjectURL(blob);
+            //console.log(url);
+            
+            $.ajax({
+                method: "POST",
+                url: "/api/patient/ls-saveasimage",
+                data: { 
+                        imgBase64: dataURL,
+                        filename: '123_sign.png'
+                    },
+                dataType: 'json',
+                contentType: "application/json",
+                success: function(data){
+                if(jQuery.type(data.message) == 'string')
+                    console.log(data.message);
+                }
+            });
+        }
+        
+
+        /*
+        $("#rdoPayfull").click(function(event) {
+            if ($(this).is(":checked")){
+                $('#rdoMonthlyPay6').prop('checked', false);
+                $('#rdoMonthlyPay12').prop('checked', false);
+                $('#rdoMonthlyPay18').prop('checked', false);
+            }
+        });
+        $("#rdoMonthly").click(function(event) {
+            $('#rdoMonthlyPay6').prop('checked', true);
+        });
+        */
+        
+        $("input[name='rdoPaymentMode']").click(function(event) {
+            var payMode = $("input[name='rdoPaymentMode']:checked").val();
+            console.log('pay mode:', payMode);
+            if(payMode === 'full'){
+                $('#rdoMonthlyPay6').prop('checked', false);
+                $('#rdoMonthlyPay12').prop('checked', false);
+                $('#rdoMonthlyPay18').prop('checked', false);
+            }
+            else if(payMode === 'month'){
+                $('#rdoMonthlyPay6').prop('checked', true);
+            }
+
+        });
+
+        $("input[name='rdoPayType']").click(function(event) {
+            var radioValue = $("input[name='rdoPayType']:checked").val();
+            console.log('rdoPayType', radioValue);
+            $('#rdoMonthly').prop('checked', true);
+            
+        });
+
+        $("input[type='radio1']").click(function(){
+            var radioValue = $("input[name='rdoPayType']:checked").val();
+            if(radioValue){
+                console.log("Your are a - " + radioValue);
+            }
+        });
+
+    });
+
+</script>
+<script language="javascript" src="/bootstrap/js/signature/signature_pad.umd.js"></script>
+<script language="javascript" src="/bootstrap/js/signature/app.js"></script>

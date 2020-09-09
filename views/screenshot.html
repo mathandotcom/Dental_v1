@@ -1,0 +1,35 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+</head>
+<body>
+    <div id="capture" style="height: 1200px; border: 1px solid red;">
+        <p>Some text1</p>
+        <p>Some text2</p>
+        <p>Some text3</p>
+        <p>Some text4</p>
+        
+    </div>
+    <div>
+        <img src="" id="canvasimage" />
+    </div>
+    <button id="btnCapture" onclick="screenshot()" value="Capture">Capture</button>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</body>
+
+<script>
+    async function screenshot()
+    {
+        await html2canvas(document.querySelector("#capture"), {scale:.5, allowTaint: true,}).then(canvas => {
+            //document.body.appendChild(canvas);
+            document.getElementById('canvasimage').src = canvas.toDataURL('image/png');
+
+        });
+    }
+</script>
+
+</html>

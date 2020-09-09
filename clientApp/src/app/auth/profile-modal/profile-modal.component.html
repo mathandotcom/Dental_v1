@@ -1,0 +1,51 @@
+<div class="modal-header">
+  <h5 class="modal-title mt-0" id="mdTreatmentPlan">User Profile - {{firstName}}</h5>
+  <button type="button" class="close" (click)="model.dismiss('Cross click')" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="container" *ngIf="true">
+    <div class="row">
+      <div class="w-100 boxboost">
+        <div class="card mb-0 p-3 shadow-less">
+          <div class="col-lg-8 ml-auto">
+            <p>
+              <span class="personal-detail-title">First Name</span>
+              <span class="personal-detail-info">{{firstName}}</span>
+            </p>
+            <p>
+              <span class="personal-detail-title">Last Name:</span>
+              <span class="personal-detail-info">{{lastName}}</span>
+            </p>
+            <p>
+              <span class="personal-detail-title">Phone No:</span>
+              <span class="personal-detail-info">{{userPhone}}</span>
+            </p>
+            <p>
+              <span class="personal-detail-title">Email:</span>
+              <span class="personal-detail-info">{{userEmail}}</span>
+            </p>
+            <p>
+              <span class="personal-detail-title">Clinic Id:</span>
+              <span class="personal-detail-info">{{clinicId}}</span>
+            </p>
+            <p>
+              <span class="personal-detail-title">Role Id:</span>
+              <span class="personal-detail-info">{{roleId}}</span>
+            </p>
+
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer fobox">
+
+
+  <button type="button" class="mr-2 btn btn-danger" (click)="model.dismiss()">
+    <i class="flaticon-cancel-12"></i>Close</button>
+</div>

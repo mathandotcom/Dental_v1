@@ -1,0 +1,172 @@
+<div class="container">
+  <div class="row vh-100 ">
+    <div class="col-12 align-self-center">
+      <div class="auth-page">
+        <div class="card auth-card shadow-lg" [ngClass]="{'mt-5': pageMode === 'n'}">
+          <div class="card-body">
+            <div class="px-3">
+              <div class="auth-logo-box">
+                <a href="../dashboard/analytics-index.html" class="logo logo-admin"><img
+                    src="./assets/assets/images/logo-sm.png" height="55" alt="logo" class="auth-logo"></a>
+              </div>
+              <!--end auth-logo-box-->
+
+              <div class="text-center auth-logo-text">
+                <h4 class="mt-0 mb-5 mt-5">Register for Justdental</h4>
+                <!-- <p class="text-muted mb-0"></p>   -->
+              </div>
+              <!--end auth-logo-text-->
+
+
+              <form (ngSubmit)="onSubmit()" #f="ngForm">
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label for="firstname" class="control-label required">First Name</label>
+
+                    <input type="text" id="firstname" 
+                    placeholder="First Name" class="form-control" ngModel
+                      name="firstname" 
+                      required firstname 
+                      #firstname="ngModel">
+                    <div class="show-error">
+
+                      <span class="input-error" *ngIf="!firstname.valid && firstname.touched">This field is
+                        required!</span>
+
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="lastname" class="control-label required">Last Name</label>
+                    <input type="text" id="lastname" placeholder="Last Name" class="form-control" ngModel
+                      name="lastname" required lastname #lastname="ngModel">
+                    <div class="show-error">
+
+                      <span class="input-error" *ngIf="!lastname.valid && lastname.touched">This field is
+                        required!</span>
+
+                    </div>
+                  </div>
+
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <label for="phoneno" class="control-label required">Phone No</label>
+                    <input maxlength="10" minlength="10" placeholder="Phone No"
+                      oninput="this.value = this.value.replace(/[^\d{10}$]/g, '').replace(/(\..*)\./g, '$1');"
+                      type="tel" id="phoneno" class="form-control" ngModel name="phoneno" required phoneno
+                      #phoneno="ngModel">
+                    <div class="show-error">
+
+                      <span class="input-error"
+                        *ngIf="!phoneno.valid && phoneno.touched && phoneno.errors?.required">This field is
+                        required!</span>
+                      <span class="input-error" *ngIf="!phoneno.valid && phoneno.touched && phoneno.errors?.minlength">
+                        Phone number must be at least 10 numbers</span>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <label for="email" class="control-label required">Email</label>
+                    <input type="email" id="email" class="form-control" ngModel name="email" required email
+                      #email="ngModel" placeholder="Email" minlength="5" maxlength="100">
+                    <div class="show-error">
+                      <span class="input-error" *ngIf="!email.valid && email.touched">Please enter a valid email!</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <label for="password" class="control-label required">Password</label>
+                    <input type="password" id="password" placeholder="Password" class="form-control" ngModel
+                      name="password" required password minlength="8" #password="ngModel">
+                    <div class="show-error">
+
+                      <span class="input-error"
+                        *ngIf="(!password.valid && password.touched && password.errors?.required)">Please enter
+                        password</span>
+                      <span class="input-error"
+                        *ngIf="!password.valid && password.touched && password.errors?.minlength">Please enter at least
+                        8 chars</span>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <label for="clinicid" class="control-label required">Clinic ID</label>
+                    <select type="select" class="form-control" name="clinicid" id="clinicid" ngModel required clinicid
+                      #clinicid="ngModel" placeholder="Select">
+                      <option selected="">-- Select --</option>
+                      <option value='1'>ID 1</option>
+                    </select>
+                    <div class="show-error">
+
+                      <span class="input-error"
+                        *ngIf="(!clinicid.valid && clinicid.touched && clinicid.errors?.required)">This field is
+                        required!</span>
+
+
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <label for="roleid" class="control-label required">Role ID</label>
+                    <select class="form-control" name="roleid" id="roleid" ngModel required roleid #roleid="ngModel"
+                      placeholder="Select">
+                      <option selected="">-- Select --</option>
+                      <option value='1'>Admin</option>
+                      <option value='2'>Doctor</option>
+                      <option value='3'>Nurse</option>
+                      <option value='4'>User</option>
+                    </select>
+                    <div class="show-error">
+
+                      <span class="input-error"
+                        *ngIf="(!roleid.valid && roleid.touched && roleid.errors?.required)">This field is
+                        required!</span>
+
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="form-group mb-0 row">
+                  <div class="col-12 mt-4">
+                    <button class="btn btn-primary btn-round btn-block waves-effect waves-light" type="submit"
+                      [disabled]="!f.valid">
+                      Submit
+                    </button>
+                  </div>
+                  <!-- <div class="col-6 mt-4">
+                    <button class="btn btn-primary btn-round btn-block waves-effect waves-light" type="button"
+                      (click)="onReset()">
+                      Reset
+                    </button>
+                  </div> -->
+                  <!--end col-->
+                </div>
+
+              </form>
+            </div>
+            <!--end card-body-->
+            <div class="m-3 text-center">
+              <p class="">Already have an account ? <a [routerLink]="['/login']"
+                      class="text-primary ml-2">Sign in</a></p>
+          </div>            
+          </div>
+          <!--end card-->
+        </div>
+        <!--end auth-card-->
+      </div>
+      <!--end col-->
+    </div>
+    <!--end row-->
+  </div>
+  <!--end container-->
+  <!-- End Log In page -->
+</div>

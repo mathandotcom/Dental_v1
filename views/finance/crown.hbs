@@ -1,0 +1,240 @@
+<link rel="stylesheet" href="/bootstrap/css/signature/signature-custom.css">
+<script language="javascript" src="/bootstrap/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+<script language="javascript" src="/bootstrap/js/finance/consentApp.js"></script>
+<script language="javascript" src="/bootstrap/js/html2canvas1.0.0.js"></script>
+
+<script language="javascript" src="/bootstrap/js/base64.js"></script>
+<script language="javascript" src="/bootstrap/js/canvas2image.js"></script>
+<input type="hidden" value="{{patientId}}" id="patientId" ng-model="PatientId" />
+<input type="hidden" value="{{consenttype}}" id="consenttype" ng-model="ConsentType" />
+<div class="container-fluid section">
+    <div class="row">       
+        <div class="container mb-5 boxboost" style="background-color:#fff; border:1px solid #b0b0b0" id="patientConsentForm">
+            <div class="row">
+                <div class="mt-3 mb-5 text-center col-sm-12">
+                    <h3>Stainless Steel Crown Consent</h3>
+                </div>
+                <input type="hidden" name="pName", id="pName" value="{[{FullName}]}">
+
+                <!--
+                <div class="col-lg-10 col-sm-10 col-md-10 mx-auto mb-2" style="min-height: 10px">
+                    <div ng-class="alertType" class="m-2" role="alert" ng-if="message !=='' && alertType != ''">
+                        <i class="fa fa-exclamation-circle mr-1" style="font-size: 1.3em"></i>
+                        <span>{[{message}]}</span>
+                    </div>
+                </div>
+                -->
+
+                <div class="col-10 ml-5 mb-4 cntpg1" id="patient_details">
+                    <table class="table table-bordered table-striped border-light mb-5 col-9" style="border-color:#f5f5f5">
+                        <tr>
+                            <td>Patient Name</td>
+                            <td>{[{FullName}]}</td>
+                        </tr>
+                        <tr>
+                            <td>Requested by</td>
+                            <td>{{user.firstname}} {{user.lastname}}</td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td>{[{currentDate | date:'MM/dd/yyyy HH:mm:ss'}]}</td>
+                        </tr>
+                        <tr>
+                            <td>Tooth Number(s)</td>
+                            <td>{[{2}]}</td>
+                        </tr>
+                    </table>
+                    <p class="font-weight-bold mt-4 mb-1">Summary of Consent</p>
+
+                    <div class="mt-2">
+
+
+                        <p><strong>What is a stainless steel crown and its benefits?</strong><br>
+                        
+                            A stainless steel crown restores the form and function of a tooth. If a deciduous (baby) tooth has too
+                            much dental decay to warrant a filling, then a stainless steel crown should be placed. A stainless steel
+                            crown is a very durable restoration. Stainless steel crowns are commonly used on deciduous (baby)
+                            teeth.
+                        </p>
+
+                        <p>
+                            If the tooth has had a pulpotomy, a stainless steel crown is often placed afterward. Only a stainless
+                            steel crown is likely to remain intact for the life of the tooth. Baby teeth which have had pulpotomies
+                            tend to become brittle and are more likely to break if a large filling only is placed. Failure rates for
+                            stainless steel crowns are less than 1% per year.
+                        </p>
+                        <p>
+                            Our goal is to achieve the best clinical outcome by using the least invasive treatment and avoid having
+                            the patient spend money on a treatment that doesn’t last.
+                        </p>
+                        <p>
+                            Stainless steel crowns are <strong>contra-indicated</strong>
+                        </p>
+                        <p>
+                            1: if the primary molar is close to exfoliation with more than half the roots resorbed <br>
+                            2: in a patient with a known nickel allergy
+                        </p>
+                        <p>Some parents or patients may complain about the appearance of SSCs.</p>
+
+                        <p><strong>What are my alternatives?</strong><br>
+                                                As with any dental procedure you can choose not to proceed with care. Of course, that decision has
+                            its own set of benefits and risks. The tooth may break and require an extraction. If the tooth is
+                            extracted, the remaining teeth may shift and require future orthodontics to reposition the permanent
+                            teeth.
+
+                        </p>
+
+                        <p><strong>Informed Consent:</strong><br>
+                            I can read and write English and have been given the opportunity to ask any
+                            questions regarding the nature and purpose of the proposed treatment and have received answers to
+                            my satisfaction. I do voluntarily assume any and all possible risks, including the risk of substantial
+                            harm, which may be associated with any phase of this treatment in hopes of obtaining the desired
+                            result. The fees for these services have been explained to me and I accept them as satisfactory. By
+                            signing this form, I am freely giving my consent to authorize the doctors and staff at Cross Timbers
+                            Dental in rendering any services they deem necessary or advisable to treat my dental conditions,
+                            including the administration and/or prescribing of any anesthetic agents and/or medications.                        
+                        </p>
+
+                        <p><strong>Guarantees:</strong><br>
+                            The practice of dentistry is not an exact science and no procedure is 100% successful.
+                            The doctors and/or staff at Cross Timbers Dental have made no guarantees of a successful outcome.
+                            Notifications: If a patient develops a problem it is the patient’s responsibility to notify the doctors
+                            and/or staff of Cross Timbers Dental. Through this notification we will be able to act on the patient’s
+                            behalf. Attempts to correct a problem may occur at our office or a referral to another health care
+                            practitioner may be warranted.
+                        </p>
+                    </div>
+
+
+                </div>
+                <div class="col-11 ml-5 mt-5 mb-5" id="patient_details">
+                    <div class="col-sm-12">
+                        <div class="col-sm-12" style="border-bottom: 1px solid #222;">
+                            <!--
+                                        <div class="mb-5 mt-4">
+                                            <div class="custom-control custom-checkbox mr-sm-2">
+                                                <input type="checkbox" class="custom-control-input" id="chkAgreePayment"
+                                                    ng-model="AgreePayment">
+                                                <label class="custom-control-label" for="chkAgreePayment">I agree</label>
+                                            </div>
+                                        </div>           
+                                        -->
+                            <div class="wrapper mb-1">
+                                <canvas id="signature-pad" class="signature-pad"></canvas>
+                            </div>
+                
+                            <div style="display: none;">
+                                <button id="save-png">Save as PNG</button>
+                                <button id="save-jpeg">Save as JPEG</button>
+                                <button id="save-svg">Save as SVG</button>
+                                <button id="draw">Draw</button>
+                                <button id="erase">Erase</button>
+                            </div>
+                
+                        </div>
+                        <label for="exampleFormControlTextarea1">Patients (or Responsible Party) Signature</label>
+                    </div>
+                </div>
+ 
+
+            </div>
+
+        </div>
+
+        <div class="container mb-5 boxboost" style="background-color:#fff; border:1px solid #d0d0d0; display: none;" id="patientConsentFormStatic">
+            <div class="mt-3 mb-5 text-center col-sm-12">
+                <h3>Extraction Consent</h3>
+            </div>
+            <div class="my-5">
+                <div class="row h-100 py-3 align-items-center justify-content-center" ng-class="alertType" ng-if="message !=='' && alertType == ''">
+                    <div class="col-sm-6">
+                        <div class="alert-box  mx-auto">
+                            <div class="alert alert-info alert-bg">
+                                <div class="alert-icon text-center">
+                                    <i class="fa fa-check-circle-o  fa-3x" aria-hidden="true"></i>
+                                </div>
+
+                                <div class="alert-message text-center">
+                                    <!--<strong>Success!</strong>-->Hi {[{FullName}]}, {[{message}]} 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>        
+                <img src='' id='canvasimage' class="staticImage"/>
+            </div>
+        </div>
+        
+        <div class="container mx-auto mb-2">
+            <div ng-class="alertType" id="alertWindow" class="alert alert-danger" ng-if="message !=='' && alertType != ''">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <i class="fa fa-times"></i> <strong>{[{messageStatus}]}! </strong> {[{message}]} <a href="#" class="alert-link"></a> !!
+            </div>    
+        </div>
+
+        <div class="modal-footer container">
+            <span id="updateStatus"></span>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnClose">Close</button>
+            <button type="button" class="btn btn-primary" id="clear">Clear</button>
+            <button id="btnDownload" class="btn btn-primary" ng-click="saveAsImage()">Submit</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        var element = $("#patientConsentForm"); // global variable
+
+        $("#btnDownload1").click(function () {
+            html2canvas(element, {
+                onrendered: function (canvas) {
+                    theCanvas = canvas;
+                    var pName = $('#pName').val();
+                    saveAs(canvas.toDataURL(), pName + '.png');
+                }
+            });
+        });
+
+        function saveAs(uri, filename) {
+            var link = document.createElement('a');
+            if (typeof link.download === 'string') {
+                link.href = uri;
+                link.download = filename;
+
+                //Firefox requires the link to be in the body
+                document.body.appendChild(link);
+
+                //simulate click
+                link.click();
+
+                //remove the link when done
+                document.body.removeChild(link);
+            } else {
+                window.open(uri);
+            }
+        }
+
+
+        $("#rdoPayfull").click(function(event) {
+            if ($(this).is(":checked")){
+                $('#rdoMonthlyPay6').prop('checked', false);
+                $('#rdoMonthlyPay12').prop('checked', false);
+                $('#rdoMonthlyPay18').prop('checked', false);
+            }
+        });
+
+        $("[data-dismiss]").on("click", function(){
+            $("." + $(this).attr("data-dismiss")).hide();
+        });
+
+        $('.close').click(function(){
+            $(this).parent().hide();
+        });
+
+
+    });
+
+</script>
+<script language="javascript" src="/bootstrap/js/signature/signature_pad.umd.js"></script>
+<script language="javascript" src="/bootstrap/js/signature/app.js"></script>

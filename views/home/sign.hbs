@@ -1,0 +1,130 @@
+<link rel="stylesheet" href="/bootstrap/css/signature/signature-custom.css">
+<script language="javascript" src="/bootstrap/js/html2canvas.js"></script>
+<script language="javascript" src="/bootstrap/js/base64.js"></script>
+<script language="javascript" src="/bootstrap/js/canvas2image.js"></script>
+<script language="javascript" src="/bootstrap/js/finance/optionApp.js"></script>
+
+
+<input type="hidden" value="{{patientId}}" id="patientId" ng-model="PatientId" />
+<div class="container-fluid section">
+    <div class="row">
+        <div class="container mb-4">
+            <div class="row">
+                <div class="w-100 boxboost">
+                    <h5>Treatment plan details</h5>
+                    <div class="alert alert-danger m-2" role="alert" ng-if="errorMessage != ''">
+                        <i class="fa fa-exclamation-circle mr-1"></i>
+                        {[{errorMessage}]}
+                    </div>
+                    <table class="table table-striped table-bordered table-hover table-md mt-3" id="PendingDetails">
+                        <thead>
+                            <tr class="text-center">
+                                <th style="width:40px;">#</th>
+                                <th scope="col">Code</th>
+                                <th scope="col" style="width:40%;">Description</th>
+                                <th scope="col">Fees</th>
+                                <th scope="col">Pri. Insurance</th>
+                                <th scope="col">Patient Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbyPendingDetails">
+                            <tr ng-repeat="plan in TreatmentPlanDetails">
+                                <td style="width:40px;">{[{$index + 1}]}</td>
+                                <td scope="col">{[{plan.procCode}]}</td>
+                                <td scope="col">{[{plan.descript}]}</td>
+                                <td scope="col" class="text-right">{[{plan.procFee}]}</td>
+                                <td scope="col" class="text-right">{[{plan.insPayEst}]}</td>
+                                <td scope="col" class="text-right">{[{plan.patientEst}]}</td>
+                            </tr>
+                            <tr class="text-right">
+                                <td colspan="3">Total</td>
+                                <td scope="col" class="text-right">{[{TotalFees}]}</td>
+                                <td scope="col" class="text-right">{[{PrimaryInsurance}]}</td>
+                                <td scope="col" class="text-right">{[{PatientCost}]}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container mb-5 boxboost" style="background-color:#fff; border:1px solid #b0b0b0" id="patientFinanceOption">
+    <div class="row">
+        <div class="mt-3 mb-5 text-center col-sm-12">
+            <h3>Treatment Plan and Payment Options</h3>
+        </div>
+        <input type="hidden" name="pName", id="pName" value="{[{FullName}]}">
+
+        <div class="col-lg-5 col-md-5 col-sm-5 text-center">
+            <img src="/images/dental.png" width="75%" />
+        </div>
+
+        <div>
+        <div class="wrapper">
+            <canvas id="signature-pad" class="signature-pad" width=400 height=200></canvas>
+        </div>
+        <button id="save-png">Save as PNG</button>
+        <button id="save-jpeg">Save as JPEG</button>
+        <button id="save-svg">Save as SVG</button>
+        <button id="draw">Draw</button>
+        <button id="erase">Erase</button>
+        <button id="clear">Clear</button>            
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+    
+<script language="javascript" src="/bootstrap/js/signature/signature_pad.umd.js"></script>
+<script language="javascript" src="/bootstrap/js/signature/app.js"></script>
+
+<script>
+    $(function()
+    {
+        $("#btnDownload").click(function () {
+            html2canvas(element, {
+                onrendered: function (canvas) {
+                    theCanvas = canvas;
+                    var pName = $('#pName').val();
+                    saveAs(canvas.toDataURL(), pName + '.png');
+                }
+            });
+        });
+
+        function saveAs(uri, filename) {
+            var link = document.createElement('a');
+            if (typeof link.download === 'string') {
+                link.href = uri;
+                link.download = filename;
+
+                //Firefox requires the link to be in the body
+                document.body.appendChild(link);
+
+                //simulate click
+                link.click();
+
+                //remove the link when done
+                document.body.removeChild(link);
+            } else {
+                window.open(uri);
+            }
+        }
+
+
+        $("#rdoPayfull").click(function(event) {
+            if ($(this).is(":checked")){
+                $('#rdoMonthlyPay6').prop('checked', false);
+                $('#rdoMonthlyPay12').prop('checked', false);
+                $('#rdoMonthlyPay18').prop('checked', false);
+            }
+        });        
+    });
+    
+</script>

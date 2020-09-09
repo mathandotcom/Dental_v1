@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>{{title}}</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta content="Application to make paperless dental clinical" name="description" />
+        <meta content="" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="../assets/images/favicon.ico">
+
+         <!-- DataTables -->
+         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+         <link href="../plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+         <!-- Responsive datatable examples -->
+         <link href="../plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" /> 
+
+        <!-- App css -->
+        <link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/css/jquery-ui.min.css" rel="stylesheet">
+        <link href="../assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/css/metisMenu.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/css/app.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/css/customize.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    {{> leftbar}}
+    {{> topbar}}
+    <!-- start page-wrapper -->
+    <div class="page-wrapper">
+        {{{body}}}
+    </div>
+    <!-- end page-wrapper -->
+
+ <!-- jQuery  -->
+        <script src="../assets/js/jquery.min.js"></script>
+        <script src="../assets/js/jquery-ui.min.js"></script>
+        <script src="../assets/js/bootstrap.bundle.min.js"></script>
+        <script src="../assets/js/metismenu.min.js"></script>
+        <script src="../assets/js/waves.js"></script>
+        <script src="../assets/js/feather.min.js"></script>
+        <script src="../assets/js/jquery.slimscroll.min.js"></script>
+        <script src="../plugins/apexcharts/apexcharts.min.js"></script> 
+        
+        <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="../plugins/datatables/dataTables.bootstrap4.min.js"></script>
+
+        <!-- App js -->
+        <script src="../assets/js/app.js"></script>
+        <script>
+            // Datatable
+            $('#datatable').DataTable();
+        </script>
+
+</body>
+</html>
+

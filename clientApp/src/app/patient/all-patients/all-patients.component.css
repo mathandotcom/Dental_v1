@@ -1,0 +1,17 @@
+table#tpo.table {
+    background-color: #f1f1f1;
+    -webkit-box-shadow: 0 4px 8px -2px rgba(9,30,66,.28);
+    box-shadow: 0 4px 8px -2px rgba(9,30,66,.28);
+
+}
+
+table#tpo.table td{
+    border: 1px solid #eaf0f7;
+}
+
+table tr.alt-row-bg{
+    background-color: #dfdfdf;
+}
+table tr.row-bg{
+    background-color: #d1d1d1;
+}

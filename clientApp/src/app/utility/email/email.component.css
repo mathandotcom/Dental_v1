@@ -1,0 +1,15 @@
+.border-bottem{
+    border-bottom: 1px solid #ccc;
+    margin: 0 2px;
+}
+
+.border-bottem input.form-control{
+    border: none;
+}
+
+.shadow-less{
+    -webkit-box-shadow: 0 0px 0px 0px rgba(0,0,0,.5);
+    -moz-box-shadow: 0 0px 0px 0px rgba(0,0,0,.5);
+    box-shadow: 0 0px 0px 0px rgba(0,0,0,.5);
+
+}

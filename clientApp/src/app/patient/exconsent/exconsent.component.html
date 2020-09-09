@@ -1,0 +1,273 @@
+<link rel="stylesheet" href="/assets/assets/css/signature/signature-custom.css"  type="text/css">
+<link rel="stylesheet" href="/assets/plugins/sweet-alert2/sweetalert2.min.css"  type="text/css">
+<i appLoadScript [script]="'/assets/assets/custom/signature/html2canvas1.0.0.js'"></i>
+
+<input type="hidden" value="{{patientId}}" id="patientId" ng-model="PatientId" />
+<input type="hidden" value="{{consentType}}" id="consenttype" ng-model="ConsentType" />
+
+<div class="container-fluid">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-right">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Metrica</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Appointments</a></li>
+                        <li class="breadcrumb-item active">Appointments</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">All Consent</h4>
+            </div><!--end page-title-box-->
+        </div><!--end col-->
+    </div>
+
+    <!-- end page title end breadcrumb -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div *ngIf="inputMessage" class="alert alert-danger mt-1 mb-2 col-12 mx-auto"><span class="fa fa-info-circle mr-2" style="font-size: 16px;"></span>{{inputMessage}}</div>
+                        <div class="form-row mt-3">
+                            <div class="col-md-3 mb-3 text-bold"><label for="validationCustom01">Patient Name</label>
+                                <select class="form-control" [(ngModel)]="patientIdSelected" id="patientId" name="patientId"
+                                    (change)="updatePatientSelected()" required>
+                                    <option value="0">Select</option>
+                                    <option *ngFor="let patient of patients" value="{{patient.id}}">{{patient.firstName}}
+                                        {{patient.middleName}} {{patient.lastName}}</option>
+                                </select>
+                            </div>
+                            <!--end col-->
+                            <div class="col-md-3 mb-3 text-bold"><label for="validationCustom02">Consent Type</label>
+                                <select class="form-control" [(ngModel)]="consentTypeSelected" id="consentType" name="consentType"
+                                    (change)="updateConsentTypeSelected()">
+                                    <option value="0">Select</option>
+                                    <option *ngFor="let type of consentTypes" value="{{type.id}}">{{type.name}}</option>
+                                </select>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                            <!--end col-->
+                            <div class="col-md-3 mb-3" style="margin-top: 6px;"><label for="validationCustom02"></label>
+                                <button type="button" id="btnSearchConsent" class="btn btn-primary px-4 mt-3 mb-3" (click)="searchConsent()"><i
+                                        class="dripicons-search mr-2"></i>Search</button>
+                            </div>
+                            <!--end col-->
+                        </div>
+                    
+                </div>
+                <!--end card-body-->
+            </div><!--end card--> 
+        </div> <!--end col-->                               
+    </div><!--end row-->   
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="mt-3 mb-4 text-center col-sm-12">
+                            <h3>{{consentTitle}}</h3>
+                        </div>
+                        <input type="hidden" name="FullName" id="pName" [(ngModel)]="FullName">
+                        <div *ngIf="message" [ngClass]="messageStatus" class="alert mt-1 mb-2 col-12 mx-auto"><span class="fa fa-info-circle mr-2" style="font-size: 16px;"></span>{{message}}</div>
+
+                        <div *ngIf="isLoading" class="col-12 mx-auto mb-5 d-flex justify-content-center"><div class="spinner-border text-blue" role="status"><span class="sr-only">Loading...</span></div></div>
+
+                        <div class="col-12 mx-auto mb-5" id="patient_details" *ngIf="!isLoading">
+                            <div class="pull-left m-2 d-inline p-2" >
+                                <button type="button"  id="btnNewConsent"  class="btn btn-primary px-4 mt-0 mb-3" (click)="openNewConsentModal(newConsentModal)"  data-tooltip="tooltip" data-placement="right"><i class="mdi mdi-plus-circle-outline mr-2"></i>Create new Consent</button>
+                            </div>
+                            <div class="pull-left mt-4 d-inline p-2" style="background-color: #fff;" ></div>
+                            <table class="table table-bordered border-light mb-5" style="border-color:#f5f5f5">
+                                <thead>
+                                    <tr>
+                                        <th>Sr#</th>
+                                        <th>Created On</th>
+                                        <th>Accepted By</th>
+                                        <th>Received By</th>
+                                        <th>Consent</th>
+                                        <th>Comments</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of consentModel; index as i">
+                                        <td class="mx-auto ng-binding" style="width:30px;">{{i+1}}</td>
+                                        <td scope="col" class="ng-binding">{{item.createdon | date:'MM/dd/yyyy HH:mm'}}</td>
+                                        <td scope="col" class="ng-binding">{{patientNameSelected}}</td>
+                                        <td scope="col" class="ng-binding">{{item.firstname}} {{item.lastname}}</td>
+                                        <td scope="col" class="pl-4">
+                                            <span data-placement="right">
+                                                <a type="button" id="modalImage" (click)="openExistingConsent(existingConsentModal, item)" class="" ngbTooltip="Click to open existing consent" placement="bottom">
+                                                    <i class="far fa-file-image text-primary fa-hover-hidden fa-2x" aria-hidden="true"></i>
+                                                    <i class="fas fa-file-image text-primary fa-hover-show fa-2x" aria-hidden="true"></i>
+
+                                                </a>
+                                            </span>
+                                        </td>
+                                        <td scope="col" class="ng-binding">{{item.comments}} </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div><!--end card-body--> 
+            </div><!--end card--> 
+        </div> <!--end col-->                               
+    </div><!--end row-->   
+                      
+    <!-- The Modal -->
+            <ng-template #existingConsentModal let-modal>
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Consent Form</h4>
+                    <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <img src="{{existingConsentFilePath}}" id="imgConsentForm" width="100%">
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
+                </div>
+            </ng-template>
+
+    <!-- The Modal to create new consent -->
+
+            <ng-template #newConsentModal let-modal>
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Consent Form</h4>
+                    <button type="button" class="close" (click)="modal.dismiss('Cross click')" >&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="container mb-4 pt-3 mb-plain" id="patientConsentForm">
+                        <div class="mt-3 mb-5 text-center col-sm-12">
+                            <h3>{{consentTitle}}</h3>
+                        </div>
+    
+                        <table class="table table-bordered table-striped border-light mb-5  mt-2 col-9" style="border-color:#f5f5f5">
+                            <tbody>
+                                <tr>
+                                    <td>Patient Name</td>
+                                    <td class="ng-binding">{{patientName}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Requested by</td>
+                                    <td>{{loggedUserName}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Date</td>
+                                    <td class="ng-binding">{{currentDate | date:'MM/dd/yyyy HH:mm:ss'}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Tooth Number(s)</td>
+                                    <td class="ng-binding">2</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="font-weight-bold mt-4 mb-1 title">Summary of Consent</p>
+                
+                        <div *ngIf="consentType===1">
+                            <app-extraction-consent></app-extraction-consent>
+                        </div>
+                        <div *ngIf="consentType===2">
+                            <app-crown-consent></app-crown-consent>
+                        </div>
+                        <div *ngIf="consentType===3">
+                            <app-photography-consent></app-photography-consent>
+                        </div>
+                        <div *ngIf="consentType===4">
+                            <app-crownbridge-consent></app-crownbridge-consent>
+                        </div>
+                        <div *ngIf="consentType===5">
+                            <app-fullpartial-denture-consent></app-fullpartial-denture-consent>
+                        </div>
+                        <div *ngIf="consentType===6">
+                            <app-dentistry-informed-spanish-consent></app-dentistry-informed-spanish-consent>
+                        </div>
+                        <div *ngIf="consentType===7">
+                            <app-dentistry-minor-spanish-consent></app-dentistry-minor-spanish-consent>
+                        </div>
+                
+                        <div class="row pt-3 pb-5 mx-3 align-items-center h-100 mt-5">
+                            <div class="col-sm-12" style="border-bottom: 1px solid #222;">
+                                <div class="wrapper mb-1">
+                                    <canvas id="signature-pad" class="signature-pad" width="1024" height="198"></canvas>
+                                </div>
+                                <div style="display: none;">
+                                    <button id="save-png">Save as PNG</button>
+                                    <button id="save-jpeg">Save as JPEG</button>
+                                    <button id="save-svg">Save as SVG</button>
+                                    <button id="draw">Draw</button>
+                                    <button id="erase">Erase</button>
+                                </div>
+                            </div>
+                            <label for="exampleFormControlTextarea1">Patients (or Responsible Party) Signature</label>
+                        </div>
+                    </div>
+
+                    <div class="container mb-5 boxboost" style="background-color:#fff; border:1px solid #d0d0d0; display: none;" id="patientConsentFormStatic">
+                        <div class="mt-3 mb-5 text-center col-sm-12">
+                            <h3>Extraction Consent</h3>
+                        </div>
+                        <div class="my-5">
+                            <div class="row h-100 py-3 align-items-center justify-content-center" ng-class="alertType" ng-if="message !=='' && alertType == ''">
+                                <div class="col-sm-6">
+                                    <div class="alert-box  mx-auto">
+                                        <div class="alert alert-secondary alert-bg">
+                                            <div class="alert-icon text-center">
+                                                <i class="far fa-check-circle fa-3x" aria-hidden="true"></i>
+                                            </div>
+            
+                                            <div class="alert-message text-center" id="responseMessage">
+                                                <!--<strong>Success!</strong>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>        
+                            <img src='' id='canvasimage' class="staticImage"/>
+                        </div>
+                    </div>
+
+                    <div class="container mx-auto mb-2" id="alertWindow" style="display: none;">
+                        <div class="alert alert-danger" id="alertType">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <i class="fas fa-times-circle" style="font-size: 15px;"></i> <span id="errorMessage"></span><a href="#"
+                                class="alert-link"></a> !!
+                        </div>
+                    </div>
+            
+                    <i appLoadScript [script]="'./assets/assets/custom/signature/signature_pad.umd.js'"></i>
+                    <i appLoadScript [script]="'./assets/assets/custom/signature/app.js'"></i>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <input type="hidden" id="patientId" [ngModel]="patientId" name="patientId"/>
+                    <input type="hidden" id="consenttype" [ngModel]="consentType"  name="consenttype"/>
+                    <input type="hidden" id="username" [ngModel]="patientName" name="patUserName"/>
+                    <input type="hidden" id="loggedUserId" [ngModel]="loggedUserId" name="loggedUserId"/>
+                    <input type="hidden" id="loggedUserClinicId" [ngModel]="loggedUserClinicId" name="loggedUserClinicId"/>
+
+                    <button type="button" class="btn btn-primary" onclick="saveAsImage()" id="btnDownload">Submit</button>
+                    <button type="button" class="btn btn-danger" id="clear">Clear</button>
+                    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Close</button>
+                </div>
+            </ng-template>
+</div>
+
+
+<i appLoadScript [script]="'./assets/assets/js/app.js'"></i>
+<i appLoadScript [script]="'./assets/assets/custom/exconsent.js'"></i>
+<i appLoadScript [script]="'./assets/assets/custom/common.js'"></i>
+<i appLoadScript [script]="'./assets/plugins/sweet-alert2/sweetalert2.min.js'"></i>

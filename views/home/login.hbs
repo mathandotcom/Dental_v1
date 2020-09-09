@@ -1,0 +1,148 @@
+<script language="javascript" src="/bootstrap/js/account/loginApp.js"></script>
+<!-- Log In page -->
+<div class="container">
+    <div class="row vh-100 ">
+        <div class="col-12 align-self-center">
+            <div class="auth-page">
+                <div class="card auth-card shadow-lg">
+                    <div class="card-body">
+                        <div class="px-3">
+                            <div class="auth-logo-box">
+                                <a href="/" class="logo logo-admin"><img
+                                        src="../assets/images/logo-sm.png" height="55" alt="logo" class="auth-logo"></a>
+                            </div>
+                            <!--end auth-logo-box-->
+
+                            <div class="text-center auth-logo-text">
+                                <h4 class="mt-0 mb-3 mt-5 mb-5">Sign in to Justdental</h4>
+                                <p class="text-muted mb-0"></p>
+                            </div>
+                            <!--end auth-logo-text-->
+
+
+                            <form class="form-horizontal auth-form my-4" action="/login" name="frmCustomer" method="POST">
+
+                                <div class="form-group fg-login">
+                                    <label for="username">Username</label>
+                                    <div class="input-group mb-1" ng-class="{'has-error':frmCustomer.useremail.$invalid && frmCustomer.useremail.$dirty && showEmailError}">
+                                        <span class="auth-form-icon">
+                                            <i class="dripicons-user"></i>
+                                        </span>
+                                        <input type="email" name="useremail" id="useremail" ng-model="cust.Email"
+                                        class="form-control" placeholder="Email" required autofocus required
+                                        ng-minlength="5" ng-maxlength="100"
+                                        ng-blur="showEmailError=frmCustomer.useremail.$invalid && !frmCustomer.useremail.$pristine">                                    
+                                    </div>
+                                    <div class="show-error">
+                                        <div ng-messages="frmCustomer.useremail.$dirty && frmCustomer.useremail.$error"
+                                            ng-show="showEmailError">
+                                            <span class="error" ng-show="frmCustomer.useremail.$error.required">Email Id is
+                                                Required!</span>
+                                            <span class="error" ng-show="frmCustomer.useremail.$error.email">Invalid Email
+                                                Id!</span>
+                                            <span class="error" ng-show="frmCustomer.useremail.$error.maxlength">Maximum
+                                                length required is 100</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!--end form-group-->
+
+                                <div class="form-group fg-login">
+                                    <label for="userpassword">Password</label>
+                                    <div class="input-group mb-1" ng-class="{'has-error':(frmCustomer.userpassword.$dirty && frmCustomer.userpassword.$invalid && showPassError)}">
+                                        <span class="auth-form-icon">
+                                            <i class="dripicons-lock"></i>
+                                        </span>
+                                        <input type="password" name="userpassword" id="userpassword" class="form-control"
+                                        placeholder="password" required autofocus ng-model="cust.Password" required
+                                        ng-minlength="8" ng-maxlength="25"
+                                        ng-blur="showPassError=frmCustomer.userpassword.$invalid && (!frmCustomer.userpassword.$pristine)">
+                                    </div>
+                                    <div class="show-error">
+                                        <div ng-messages="frmCustomer.userpassword.$dirty && frmCustomer.userpassword.$error"
+                                            ng-show="showPassError">
+                                            <div ng-message="required" class="has-error">
+                                                <span class="error">Password is Required!</span>
+                                            </div>
+                                            <div ng-message="minlength" class="has-error">
+                                                <span class="error">Minimum length required is 8</span>
+                                            </div>
+                                            <div ng-message="maxlength" class="has-error">
+                                                <span class="error">Maximum length required is 25</span>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                </div>
+                                <!--end form-group-->
+
+                                <div class="form-group row mt-2">
+                                    <div class="col-sm-6">
+                                        <div class="custom-control custom-switch switch-success">
+                                            <input type="checkbox" class="custom-control-input"
+                                                id="customSwitchSuccess">
+                                            <label class="custom-control-label text-muted"
+                                                for="customSwitchSuccess">Remember me</label>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-sm-6 text-right">
+                                        <a href="auth-recover-pw.html" class="text-muted font-13"><i
+                                                class="dripicons-lock"></i> Forgot password?</a>
+                                    </div>
+                                    <!--end col-->
+                                </div>
+                                <!--end form-group-->
+
+                                <div class="form-group mb-0 row">
+                                    <div class="col-12 mt-4">
+                                        <button
+                                            class="btn btn-primary btn-round btn-block waves-effect waves-light"
+                                            type="submit" ng-disabled="frmCustomer.$invalid">Log In <i class="fas fa-sign-in-alt ml-1"></i></button>
+                                    </div>
+                                    <!--end col-->
+                                </div>
+                                <!--end form-group-->
+                            </form>
+                            <!--end form-->
+                        </div>
+                        <!--end /div-->
+
+                        <div class="m-3 text-center">
+                            <p class="">Don't have an account ? <a href="/register"
+                                    class="text-primary ml-2">Resister</a></p>
+                        </div>
+                    </div>
+                    <!--end card-body-->
+                </div>
+                <!--end card-->
+                {{!-- <div class="account-social text-center mt-4">
+                    <h6 class="my-4">Or Login With</h6>
+                    <ul class="list-inline mb-4">
+                        <li class="list-inline-item">
+                            <a href="" class="">
+                                <i class="fab fa-facebook-f facebook"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="" class="">
+                                <i class="fab fa-twitter twitter"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="" class="">
+                                <i class="fab fa-google google"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div> --}}
+                <!--end account-social-->
+            </div>
+            <!--end auth-page-->
+        </div>
+        <!--end col-->
+    </div>
+    <!--end row-->
+</div>
+<!--end container-->
+<!-- End Log In page -->

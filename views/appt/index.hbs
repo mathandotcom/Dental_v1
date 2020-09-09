@@ -1,0 +1,355 @@
+<link href="/bootstrap/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+<script language="javascript" src="/bootstrap/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+<script language="javascript" src="/bootstrap/js/bootstrap-datepicker.min.js"></script>
+<script language="javascript" src="/bootstrap/js/appt/apptApp.js"></script>
+<script language="javascript" src="/bootstrap/js/appt/apptbr.js"></script>
+
+
+<!--Result-->
+
+<div class="container-fluid section">
+    <div class="row">
+            <div class="col-sm-12 col-md-12 mx-auto col-lg-12 col-xl-10">
+                <div class="row mb-5">
+                    <div class="col-xl-3 col-sm-6 py-2">
+                        <div class="card bg-primary-box text-white h-100 card-box">
+                            <div class="card-body bg-primary-box">
+                                <div class="rotate">
+                                    <i class="fa fa-user fa-4x"></i>
+                                </div>
+                                <h6 class="text-uppercase">Totay's Appointment</h6>
+                                
+                            </div>
+                            <h1 class="display-4 text-white px-3">15</h1>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 py-2">
+                        <div class="card bg-danger-box text-white h-100  card-box">
+                            <div class="card-body bg-danger-box">
+                                <div class="rotate">
+                                    <i class="fas fa-check fa-4x"></i>
+                                </div>
+                                <h6 class="text-uppercase">Appointment confirmed</h6>
+                                
+                            </div>
+                            <h1 class="display-4 text-white px-3">10</h1>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 py-2">
+                        <div class="card bg-warning-box text-white h-100  card-box">
+                            <div class="card-body bg-warning-box">
+                                <div class="rotate">
+                                    <i class="fa fa-user-md fa-4x"></i>
+                                </div>
+                                <h6 class="text-uppercase">Treatment completed</h6>
+                                
+                            </div>
+                            <h1 class="display-4 text-white px-3">6</h1>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 py-2">
+                        <div class="card bg-success-box text-white h-100  card-box">
+                            <div class="card-body bg-success-box">
+                                <div class="rotate">
+                                    <i class="fa fa-link fa-4x"></i>
+                                </div>
+                                <h6 class="text-uppercase">Feedback link sent</h6>
+                                
+                            </div>
+                            <h1 class="display-4 text-white px-3">5</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+            <div class="col-sm-12 col-md-12 mx-auto col-lg-12 col-xl-10 px-2 boxoverlay">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h4 class="h4 sec-header">Search Appointment</h4>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group mr-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid py-1">
+                    {{!-- <div class="form-group row justify-content-center">
+                        <div class="form-label-group col-8">
+                            <input type="text" id="SearchText" class="form-control input-search" ng-model="cust.SearchText"
+                                placeholder="Search Text" required autofocus>
+                            <label for="inputEmail">Search</label>
+                            
+                        </div>
+                        <div class="form-group row search">
+                            <button type="button" class="btn btn-primary" style="height: 100%;">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                        
+                    </div> --}}
+                    <!--<div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search this blog">
+                        <div class="input-group-append">
+                        <button class="btn btn-secondary" type="button">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        </div>
+                    </div>  -->                  
+
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-1 mb-1">
+                        <div class="form-inline" id="sandbox-container">
+                            <div class="form-group">
+                                <label for="date">Date:&nbsp;</label>
+                                <div class="input-group date">
+                                <input type="text" class="form-control" id="txtAptDate" ng-model="cust.ApptDateText">
+                                </div>
+                            </div>
+                            <div class="aptxdtsm">
+                                <button type="button" class="btn btn-primary" ng-click="ApptSearch()" id="btnApptSearch">Submit</button>
+                            </div>
+                        </div>
+
+                        <div class="btn-toolbar mb-2 mb-md-0 ">
+                            <div class="btn-group mr-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary text-center" ng-click="navigatedate('l')" title="previous date"><i class="fas fa-angle-left fa-2x ml-1 mr-1"></i></button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" ng-click="navigatedate('r')" title="Next date"><i class="fas fa-angle-right fa-2x ml-1 mr-1"></i></button>
+                                <button type="button" class="btn btn-outline-secondary" ng-click="reloadAppointment()" title="Next date"><i class="fas fa-refresh fa-1x ml-1 mr-1"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12 mx-auto mb-5">
+                            <div ng-class="alertType" class="m-2" role="alert" ng-if="responseMessage !=='' && alertType != ''">
+                                <i class="fa fa-exclamation-circle mr-1"></i>
+                                {[{responseMessage}]}
+                            </div>
+
+                            <table class="table table-striped table-bordered table-hover table-md mb-5">
+                                <thead>
+                                    <tr>
+                                        <th class="disp-none">#</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">App. Time</th>
+                                        <th scope="col">Phone</th>
+                                        <th scope="col" class="disp-none">App. Type</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Reminder</th>
+                                        <th scope="col">Sent on</th>
+                                        <th scope="col">Response</th>
+                                        <th scope="col">Confirmed</th>
+                                        <th scope="col">Remind</th>
+                                        <th scope="col">Feedback</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="patient in apptdetails | filter:Search | doSearch:cust.SearchText | orderBy:'LastName' |  startFrom:(currentPage -1) * pageSize |  limitTo:pageSize">
+                                        <td class="disp-none">{[{patient.id}]}</td>
+                                        <td class="align-middle" style="min-width: 10%">{[{patient.lastName}]}</td>
+                                        <td class="align-middle" style="min-width: 10%">{[{patient.firstName}]}</td>
+                                        <td class="align-middle">{[{patient.AptDateTime | date:"hh:mm a"}]}</td>
+                                        <td class="align-middle">{[{patient.WirelessPhone}]}</td>
+                                        <td class="align-middle disp-none">{[{patient.AptStatusText}]}</td>
+                                        <td class="align-middle text-center" title="{[{patient.AptConfirmedStatus}]}" ng-class="{'unconfirmed': patient.AptConfirmedStatus === 'Unconfirmed', 'confirmed': patient.AptConfirmedStatus === 'Appointment Confirmed', 'notcalled': patient.AptConfirmedStatus === 'Not Called', 'texted': patient.AptConfirmedStatus === 'Texted'}"></td>
+                                        <td class="align-middle text-center"> <!--ng-class="{'sent': patient.IsSmsSent === 1, 'notsent': patient.IsSmsSent === 0, 'yettosend':patient.IsSmsSent === null}" -->
+                                            <div class="badge badge-pill badge-inline" ng-class="{'badge-success': patient.IsSmsSent === 1, 'badge-danger': patient.IsSmsSent === 0, 'secondary':patient.IsSmsSent === null}">{[{patient.SmsSentStatus}]}</div>
+                                        </td>
+                                        <td class="text-center align-middle">{[{patient.DateTimeSent | date:"MM/dd/yyyy hh:mm a"}]}</td>
+                                        <td class="align-middle">
+                                            {[{patient.ConfirmCode}]}
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            {[{patient.daysago}]}
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            <a id="consent" title="Remind" class="btn btn-sm icon-sms" href="#/" ng-click="sendReminder(patient, 'sms')">
+                                                <i class="material-icons size-30">textsms</i>
+                                            </a>
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            <a id="consent" title="send feedback link" class="btn btn-sm  icon-feedback" href="#/" ng-click="sendReminder(patient, 'fb')">
+                                                <i class="material-icons size-30">feedback</i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 paginationbox">
+                    <ul class="justify-content-center" uib-pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" items-per-page="pageSize" max-size="maxSize" boundary-link-numbers="true" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="billDetailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog modal-lrg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">Finance Option for {{FullName}}</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                        </div>
+                        <div class="modal-body" id="patientFinanceOption">
+                            <div class="container-fluid mb-1">
+                                <div class="row">
+                                    <div class="text-center col-sm-12">
+                                        <h4>Treatment Plan and Payment Options</h4>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7" id="patient_details">
+                                        <p class="font-weight-bold">Summary of Treatment Plan</p>
+                                        <table class="table table-sm table-bordered table-hover table-md mt-3">
+                                            <tbody>
+                                                <tr ng-repeat="plan in TreatmentPlanDetails">
+                                                    <td>{{plan.descript}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="row">
+                                                            <div class="col-sm-9 text-right">Total Treatment Plan Fee</div>
+                                                            <div class="col-sm-3 text-right">{[{TotalFees | currency:'$'}]}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-9 text-right">Primary Insurance</div>
+                                                            <div class="col-sm-3 text-right">{[{PrimaryInsurance | currency:'$'}]}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-9 text-right">Insurance Discounts</div>
+                                                            <div class="col-sm-3 text-right">{[{InsuranceDiscount | currency:'$'}]}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-9 text-right">Possible Insurance Payments</div>
+                                                            <div class="col-sm-3 text-right">{[{InsurancePayment | currency:'$'}]}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-9 text-right">Your Total Amount Due</div>
+                                                            <div class="col-sm-3 text-right">{[{PatientCost | currency:'$'}]}</div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-5 text-left">
+                                        <p class="font-weight-bold">Summary of Treatment Plan</p>
+                                        <table class="table table-sm table-bordered border-light text-left" style="border-color:#f5f5f5">
+                                            <tr>
+                                                <td>Patient Name</td>
+                                                <td>{[{FullName}]}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Presented by</td>
+                                                <td>@User.Identity.Name</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Date</td>
+                                                <td>@DateTime.Now</td>
+                                            </tr>
+                                        </table>
+                                        <img src="/images/dental.png" width="20%" />
+                                    </div>
+                                </div>
+                                <div class="mt-1 mb-1 text-left col-sm-12">
+                                    <p class="font-weight-bold">Payment Choices</p>
+                                </div>
+                                <div class="row pt-1 pb-1 bg-pay-in-full align-items-center h-100">
+                                    <div class="col-sm-4">
+                                        <input type="checkbox" class="custom-checkbox" />
+                                        Pay in full
+                                    </div>
+                                    <div class="col-sm-5">
+                                        First col
+                                    </div>
+                                    <div class="col-sm-3">
+                                        Total Due Today : {[{PatientCost | currency:'$'}]}
+                                    </div>
+                                </div>
+                                <div class="row pt-1 pb-1 bg-pay-card align-items-center h-100">
+                                    <div class="col-sm-4">
+                                        <input type="checkbox" class="custom-checkbox" />
+                                        Flexible Payments - More® Mastercard
+                                    </div>
+                                    <div class="col-sm-5">
+                                        Great Rewards Card - 6 Months with 0% Interest - You decide payments
+                                    </div>
+                                    <div class="col-sm-3">
+                                        Total Due Today : {[{0 | currency:'$'}]}
+                                    </div>
+                                </div>
+                                <div class="row pt-1 pb-1 bg-pay-monthly align-items-center h-100">
+                                    <div class="col-sm-4 align-middle">
+                                        <input type="checkbox" class="custom-checkbox" />
+                                        Monthly Payments - Denefits® Plan
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <div class="row">
+                                            <div class="col-sm-7">
+                                                <p class="mt-1 mb-1">
+                                                    <input type="checkbox" class="custom-checkbox" /> 6 Monthly Payments of
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="mt-1 mb-1 col-sm-5 bg-light p-1 text-right">
+                                                    <span class="p-1"> {[{PatientCost/6 | currency:'$'}]}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-7">
+                                                <p class="mt-1 mb-1">
+                                                    <input type="checkbox" class="custom-checkbox" /> 12 Monthly Payments of
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="mt-1 mb-1 col-sm-5 bg-light p-1 text-right">
+                                                    <span class="p-1"> {[{PatientCost/12 | currency:'$'}]}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-7">
+                                                <p class="mt-1 mb-1">
+                                                    <input type="checkbox" class="custom-checkbox" /> 18 Monthly Payments of
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <div class="mt-1 mb-1 col-sm-5 bg-light p-1 text-right">
+                                                    <span class="p-1"> {[{PatientCost/18 | currency:'$'}]}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        Down payment : {[{0 | currency:'$'}]}
+                                        <p class="mt-2 mb-2">Monthly payments include a 10% fee (compounded interest)</p>
+                                    </div>
+                                </div>
+                                <div class="row pt-1 pb-1 align-items-center h-100">
+                                    <p class="" style="font-size:.8em;">The Denefits Plan includes a management fee of 10%.  I understand the Denefits and More Mastercard terms of service and fees.  I understand that the amount due is my responsibility and that insurance is billed as a courtesy to assist me in paying my obligation.  I understand that insurance figures provided are estimates only.  I understand that this estimate is NOT a guarantee of payment by my insurance.  If the insurance company pays more, I will receive a refund.  If the insurance company pays less, I will either receive a bill for the difference, have my credit card on file charged for the amount owed, or will have my payment plan extended, whatever the dental practice deems best.  I understand that if my insurance company fails to pay within 60 days of the claim being submitted, the full amount due is my responsibility and I will make payment in full.  I understand that the above estimated fees are based on my treatment plan as listed above.  The treatment plan may change, altering the total cost of care.  I understand I will be charged a $40 cancellation fee if I cancel an appointment later than 10am the previous business day.</p>
+                                </div>
+                                <div class="row pt-2 pb-2 align-items-center h-100">
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-9" style="border-bottom: 1px solid #222;">
+                                        </div>
+                                        <label for="exampleFormControlTextarea1">Patients (or Responsible Party) Signature</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-9" style="border-bottom: 1px solid #222;">
+                                        </div>
+                                        <label for="exampleFormControlTextarea1">Date</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <a id="btnDownload" href="" class="btn btn-primary">Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+

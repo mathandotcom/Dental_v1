@@ -1,0 +1,86 @@
+<script language="javascript" src="/bootstrap/js/comm/smsApp.js"></script>
+
+<div class="container section">
+    <div class="row">
+        <div class="col-12 mx-auto col-xl-10 px-2 boxoverlay mt-5">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mt-3 mb-4 border-bottom">
+                <h4 class="h4 sec-header">SMS</h4>
+            </div>            
+            <div class="container-fluid py-1">
+                <div class="sms-alert col-9 mx-auto">
+                <div ng-class="alertType" class="m-2" role="alert" ng-if="responseMessage !=='' && alertType != ''" >
+                    <i class="fa fa-exclamation-circle mr-1" style="font-size: 1.3em"></i>
+                    <span>{[{responseMessage}]}</span>
+                </div>
+                </div>
+                <form class="ms-auto" action="" name="frmCustomer" method="POST">
+                    <input type="hidden" id="id" name="id" ng-model="acct.Id" value="1" />
+                    <div class="form-row mh-100">
+                        <div class="offset-md-2 col-md-3 mb-3">
+                            <div class="form-label-group col-12">
+                            <select class="custom-select" id="CountryCode" name="CountryCode" ng-model="acct.CountryCode">
+                                <option selected value="+1">Unites States: +1</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="form-label-group col-12"
+                                ng-class="{'has-error':frmCustomer.phone.$invalid && frmCustomer.phone.$dirty && showPhoneError}">
+                                <input type="number" id="phone" name="phone" ng-model="acct.Phone"
+                                        class="form-control" placeholder="Phone Number" required autofocus
+                                        ng-minlength="10" ng-maxlength="10" maxlength="10"
+                                        onkeypress="return isNumber(event)" value="{{user.phone}}"
+                                        ng-blur="showPhoneError=frmCustomer.phone.$invalid && (!frmCustomer.phone.$pristine)">
+                                    <label for="Phone">Phone Number</label>
+                            </div>  
+                            <div class="errorMessage form-label-group col-sm-12">
+                                <div ng-messages="frmCustomer.phone.$dirty && frmCustomer.phone.$error"
+                                    ng-show="showPhoneError">
+                                    <span class="error" ng-show="frmCustomer.phone.$error.required">Phone Number is
+                                        required!</span>
+                                    <span class="error" ng-show="frmCustomer.phone.$error.minlength">Minimum length
+                                        required
+                                        is 10</span>
+                                    <span class="error" ng-show="frmCustomer.phone.$error.maxlength">Maximum length
+                                        required
+                                        is 10</span>
+                                </div>
+                            </div>                                                      
+                        </div>
+                    </div>
+                    <div class="form-row mh-150">
+                        <div class="offset-md-2 col-8 mb-3">
+                            <div class="form-label-group col-12"
+                                ng-class="{'has-error':frmCustomer.Message.$invalid && frmCustomer.Message.$dirty && showMessageError}">
+                                <textarea rows="3" id="Message" name="Message" ng-model="acct.SMSMessage"
+                                        class="form-control" placeholder="Message" required autofocus
+                                        ng-minlength="2" ng-maxlength="60" maxlength="60"
+                                        value="{{user.SMSMessage}}"
+                                        ng-blur="showMessageError=frmCustomer.Message.$invalid && (!frmCustomer.Message.$pristine)"></textarea>
+                                    
+                            </div>  
+                            <div class="errorMessage form-label-group col-sm-12">
+                                <div ng-messages="frmCustomer.Message.$dirty && frmCustomer.Message.$error"
+                                    ng-show="showMessageError">
+                                    <span class="error" ng-show="frmCustomer.Message.$error.required">Message is
+                                        required!</span>
+                                    <span class="error" ng-show="frmCustomer.Message.$error.minlength">Minimum length
+                                        required
+                                        is 2</span>
+                                    <span class="error" ng-show="frmCustomer.Message.$error.maxlength">Maximum length
+                                        required
+                                        is 60</span>
+                                </div>
+                            </div>                                                      
+                        </div>
+                    </div>
+
+                    <div class="mx-auto col-8 mb-5">
+                        <button type="button" class="btn btn-block btn-primary" ng-click="sendSms()" style="margin-left: 0px"
+                            ng-disabled="frmCustomer.$invalid">Send</button>
+                    </div>                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,327 @@
+<div class="modal-header">
+  <h5 class="modal-title mt-0" id="mdTreatmentPlan">User</h5>
+  <button type="button" class="close" (click)="model.dismiss('Cross click')" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+
+  <div id="addUser" *ngIf="usermode">
+    <form #f="ngForm" (ngSubmit)="onSubmit()">
+      <div class="container" *ngIf="true">
+        <div class="row">
+          <div class="w-100 boxboost">
+            <div class="card mb-0 p-3 shadow-less">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label for="firstname" class="control-label required"
+                    [ngClass]="{'input-error-bold': !firstname.valid && firstname.touched}">First Name</label>
+                  <input type="text" id="firstname" placeholder="First Name" class="form-control" [ngModel]="firstName"
+                    [ngClass]="{'input-element-error':!firstname.valid && firstname.touched}"
+                    name="firstname" required #firstname="ngModel">
+                  <div class="show-error">
+      
+                    <span class="input-error" *ngIf="!firstname.valid && firstname.touched">This field is
+                      required!</span>
+      
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="lastname" class="control-label required"
+                    [ngClass]="{'input-error-bold': !lastname.valid && lastname.touched}">
+                    Last Name</label>
+                  <input type="text" id="lastname" placeholder="Last Name" class="form-control" [ngModel]="lastName"
+                  [ngClass]="{'input-element-error': !lastname.valid && lastname.touched}"
+                    name="lastname" required lastname #lastname="ngModel">
+                  <div class="show-error">
+      
+                    <span class="input-error" *ngIf="!lastname.valid && lastname.touched">This field is
+                      required!</span>
+      
+                  </div>
+                </div>
+      
+              </div>
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <label for="phoneno" class="control-label required"
+                    [ngClass]="{'input-error-bold': !phoneno.valid && phoneno.touched }"
+                    [ngClass]="{'input-error-bold': phoneno.errors?.minlength && phoneno.errors?.required}">
+                    Phone No</label>
+                  <input maxlength="10" minlength="10" placeholder="Phone No"
+                    oninput="this.value = this.value.replace(/[^\d{10}$]/g, '').replace(/(\..*)\./g, '$1');" type="tel"
+                    id="phoneno" class="form-control" name="phoneno" required phoneno [ngModel]="userPhone"
+                    [ngClass]="{'input-element-error': !phoneno.valid && phoneno.touched}"
+                    [ngClass]="{'input-element-error': phoneno.errors?.minlength && phoneno.errors?.required}"
+                    #phoneno="ngModel">
+                  <div class="show-error">
+      
+                    <span class="input-error" *ngIf="!phoneno.valid && phoneno.touched && phoneno.errors?.required">This field
+                      is
+                      required!</span>
+                    <span class="input-error" *ngIf="!phoneno.valid && phoneno.touched && phoneno.errors?.minlength">
+                      Phone number must be at least 10 numbers</span>
+      
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label for="email" class="control-label required"
+                    [ngClass]="{'input-error-bold': !email.valid && email.touched}">
+                    Email</label>
+                  <input type="email" id="email" class="form-control" [ngModel]="userEmail" name="email" required email
+                    [ngClass]="{'input-element-error': !email.valid && email.touched}"
+                    #email="ngModel" placeholder="Email" minlength="5" maxlength="100">
+                  <div class="show-error">
+                    <span class="input-error" *ngIf="!email.valid && email.touched">Please enter a valid email!</span>
+                  </div>
+                </div>
+      
+                <div class="col-md-6">
+                  <label for="password" class="control-label required"
+                    [ngClass]="{'input-error-bold':!password.valid && password.touched }"
+                    [ngClass]="{'input-error-bold': password.errors?.minlength && password.errors?.required}">
+                    Password</label>
+                  <input type="password" id="password" placeholder="Password" class="form-control" ngModel name="password"
+                  [ngClass]="{'input-element-error':!password.valid && password.touched }"
+                  [ngClass]="{'input-element-error': password.errors?.minlength && password.errors?.required}"                  
+                    required password minlength="8" #password="ngModel">
+                  <div class="show-error">
+      
+                    <span class="input-error"
+                      *ngIf="(!password.valid && password.touched && password.errors?.required)">Please
+                      enter
+                      password</span>
+                    <span class="input-error" *ngIf="!password.valid && password.touched && password.errors?.minlength">Please
+                      enter at least
+                      8 chars</span>
+      
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label for="clinicid" class="control-label required"
+                    [ngClass]="{'input-error-bold': !clinicid.valid && clinicid.touched && clinicid.errors?.required}">
+                    Clinic ID</label>
+                  <select type="select" class="form-control" name="clinicid" id="clinicid" [ngModel]="clinicId" required
+                  [ngClass]="{'input-element-error': !clinicid.valid && clinicid.touched && clinicid.errors?.required}"
+                    clinicid #clinicid="ngModel" placeholder="Select">
+                    <option selected="">-- Select --</option>
+                    <option value='1'>ID 1</option>
+                  </select>
+                  <div class="show-error">
+      
+                    <span class="input-error" *ngIf="(!clinicid.valid && clinicid.touched && clinicid.errors?.required)">This
+                      field is
+                      required!</span>
+      
+      
+                  </div>
+                </div>
+      
+                <div class="col-md-6">
+                  <label for="roleid" class="control-label required"
+                    [ngClass]="{'input-error-bold': !roleid.valid && roleid.touched && roleid.errors?.required}">
+                    Role ID</label>
+                  <select class="form-control" name="roleid" id="roleid" [ngModel]="roleId" required roleid #roleid="ngModel"
+                  [ngClass]="{'input-element-error': !roleid.valid && roleid.touched && roleid.errors?.required}"
+                    placeholder="Select">
+                    <option selected="">-- Select --</option>
+                    <option value='1'>Admin</option>
+                    <option value='2'>Doctor</option>
+                    <option value='3'>Nurse</option>
+                    <option value='4'>User</option>
+                  </select>
+                  <div class="show-error">
+      
+                    <span class="input-error" *ngIf="(!roleid.valid && roleid.touched && roleid.errors?.required)">This field
+                      is
+                      required!</span>
+      
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer fobox">
+        <button type="submit" class="mr-2 btn btn-primary" id="linkto" [disabled]="!f.valid" name="linkto">Submit</button>
+  
+        <button type="button" class="mr-2 btn btn-danger" (click)="model.dismiss()">
+          <i class="flaticon-cancel-12"></i>Close</button>
+      </div>
+  
+    </form>
+  </div>
+
+  <div id="updateUser" *ngIf="!usermode">
+    <form #f="ngForm" (ngSubmit)="onUpdate()">
+      <div class="container" *ngIf="true">
+        <div class="row">
+          <div class="w-100 boxboost">
+            <div class="card mb-0 p-3 shadow-less">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label
+                   for="firstname" 
+                   class="control-label required"
+                   [ngClass]="{'input-error-bold':!firstname.valid && firstname.touched}"
+                   >First Name</label>
+      
+                  <input 
+                  type="text" 
+                  id="firstname" 
+                  placeholder="First Name" 
+                  class="form-control" 
+                  [ngModel]="firstName"
+                  name="firstname"  
+                  required
+                  #firstname="ngModel"
+                  [ngClass]="{'input-element-error':!firstname.valid && firstname.touched}">
+                  <div class="show-error">
+      
+                    <span class="input-error" *ngIf="!firstname.valid && firstname.touched">This field is
+                      required!</span>
+      
+                  </div></div>
+                  <div class="col-md-6">
+                    <label for="lastname" 
+                    class="control-label required"
+                    [ngClass]="{'input-error-bold': !lastname.valid && lastname.touched}">Last Name</label>
+                    <input 
+                    type="text" 
+                    id="lastname" 
+                    placeholder="Last Name" 
+                    class="form-control" 
+                    [ngModel]="lastName"
+                    name="lastname" 
+                    required lastname #lastname="ngModel"
+                    [ngClass]="{'input-element-error': !lastname.valid && lastname.touched}">
+                    <div class="show-error">
+      
+                      <span class="input-error" *ngIf="!lastname.valid && lastname.touched">This field is
+                        required!</span>
+      
+                    </div>
+                  </div>
+      
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <label 
+                    for="phoneno" 
+                    class="control-label required"
+                    [ngClass]="{'input-error-bold': !phoneno.valid && phoneno.touched }"
+                    [ngClass]="{'input-error-bold': phoneno.errors?.minlength && phoneno.errors?.required}"
+                    >Phone No</label>
+                    <input maxlength="10" minlength="10" placeholder="Phone No"
+                      oninput="this.value = this.value.replace(/[^\d{10}$]/g, '').replace(/(\..*)\./g, '$1');"
+                      type="tel" id="phoneno" class="form-control"  
+                      name="phoneno" 
+                      required phoneno
+                      [ngModel]="userPhone"
+                      #phoneno="ngModel"
+                      [ngClass]="{'input-element-error': !phoneno.valid && phoneno.touched }"
+                      [ngClass]="{'input-element-error': phoneno.errors?.minlength && phoneno.errors?.required}">
+                    <div class="show-error">
+      
+                      <span class="input-error"
+                        *ngIf="!phoneno.valid && phoneno.touched && phoneno.errors?.required">This field is
+                        required!</span>
+                      <span class="input-error" *ngIf="!phoneno.valid && phoneno.touched && phoneno.errors?.minlength">
+                        Phone number must be at least 10 numbers</span>
+      
+                    </div>
+                  </div>
+                </div>
+    
+                <div class="form-group row">
+                  <div class="col-md-12" >
+                    <label for="email" 
+                    class="control-label required"
+                    [ngClass]="{'input-error-bold': !email.valid && email.touched}"
+                        >Email</label>
+                    <input type="email" id="email" class="form-control" 
+                    [ngModel]="userEmail"
+                     name="email" 
+                     required email
+                      #email="ngModel" 
+                      [ngClass]="{'input-element-error': !email.valid && email.touched}"
+                      placeholder="Email" minlength="5" maxlength="100">
+                    <div class="show-error">
+                      <span class="input-error" *ngIf="!email.valid && email.touched">Please enter a valid email!</span>
+                    </div>
+                  </div>
+               
+                 
+                </div>
+      
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label for="clinicid"
+                     class="control-label required"
+                     [ngClass]="{'input-error-bold': !clinicid.valid && clinicid.touched && clinicid.errors?.required}">Clinic ID</label>
+                    <select type="select" class="form-control"
+                     name="clinicid" 
+                     id="clinicid" 
+                     [ngModel]="clinicId" 
+                     required clinicid
+                      #clinicid="ngModel" placeholder="Select"
+                      [ngClass]="{'input-element-error': !clinicid.valid && clinicid.touched && clinicid.errors?.required}">
+                      <option selected="">-- Select --</option>
+                      <option value='1'>ID 1</option>
+                    </select>
+                    <div class="show-error">
+      
+                      <span class="input-error"
+                        *ngIf="(!clinicid.valid && clinicid.touched && clinicid.errors?.required)">This field is
+                        required!</span>
+      
+      
+                    </div>
+                  </div>
+               
+                  <div class="col-md-6">
+                    <label 
+                    for="roleid" 
+                    class="control-label required"
+                    [ngClass]="{'input-error-bold': !roleid.valid && roleid.touched && roleid.errors?.required}">Role ID</label>
+                    <select class="form-control" 
+                    name="roleid" 
+                     id="roleid"[ngModel]="roleId"  required roleid #roleid="ngModel"
+                      placeholder="Select"
+                      [ngClass]="{'input-element-error': !roleid.valid && roleid.touched && roleid.errors?.required}">
+                      <option selected="">-- Select --</option>
+                      <option value='1'>Admin</option>
+                      <option value='2'>Doctor</option>
+                      <option value='3'>Nurse</option>
+                      <option value='4'>User</option>
+                    </select>
+                    <div class="show-error">
+      
+                      <span class="input-error"
+                        *ngIf="(!roleid.valid && roleid.touched && roleid.errors?.required)">This field is
+                        required!</span>
+      
+                    </div>
+                  </div>
+                </div>              
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="mr-2 btn btn-primary" id="linkto" name="linkto">Submit</button>
+        <button type="button" class="mr-2 btn btn-danger" (click)="model.dismiss()">
+          <i class="flaticon-cancel-12"></i>Close</button>
+      </div>
+    
+    </form>
+  </div>
+ 
+ 
